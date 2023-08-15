@@ -1,0 +1,97 @@
+{
+	"common": {
+		"name": "device-manager",
+		"version": "0.0.1",
+		"news": {
+			"0.0.1": {
+				"en": "initial release",
+				"de": "Erstveröffentlichung",
+				"ru": "Начальная версия",
+				"pt": "lançamento inicial",
+				"nl": "Eerste uitgave",
+				"fr": "Première version",
+				"it": "Versione iniziale",
+				"es": "Versión inicial",
+				"pl": "Pierwsze wydanie",
+				"zh-cn": "首次出版"
+			}
+		},
+		"title": "Device Manager",
+		"titleLang": {
+			"en": "Device Manager",
+			"de": "Gerätemanager",
+			"ru": "Диспетчер устройств",
+			"pt": "Gerenciador de Dispositivos",
+			"nl": "Apparaat beheerder",
+			"fr": "Gestionnaire de périphériques",
+			"it": "Gestore dispositivi",
+			"es": "Administrador de dispositivos",
+			"pl": "Menadżer urządzeń",
+			"zh-cn": "装置经理"
+		},
+		"desc": {
+			"en": "Manage devices from adapters within ioBroker.",
+			"de": "Verwalten Sie Geräte von Adaptern innerhalb von ioBroker.",
+			"ru": "Управляйте устройствами с адаптеров в ioBroker.",
+			"pt": "Gerencie dispositivos de adaptadores dentro do ioBroker.",
+			"nl": "Beheer apparaten van adapters binnen ioBroker.",
+			"fr": "Gérez les appareils à partir d'adaptateurs dans ioBroker.",
+			"it": "Gestisci i dispositivi dagli adattatori all'interno di ioBroker.",
+			"es": "Administre dispositivos desde adaptadores dentro de ioBroker.",
+			"pl": "Zarządzaj urządzeniami z adapterów w ioBroker.",
+			"zh-cn": "通过 ioBroker 中的适配器管理设备。"
+		},
+		"authors": ["Jey Cee <iobroker@all-smart.net>"],
+		"keywords": ["devices", "manager"],
+		"license": "MIT",
+		"platform": "Javascript/Node.js",
+		"main": "main.js",
+		"icon": "device-manager.png",
+		"enabled": true,
+		"extIcon": "https://raw.githubusercontent.com/Jey Cee/ioBroker.device-manager/main/admin/device-manager.png",
+		"readme": "https://github.com/Jey Cee/ioBroker.device-manager/blob/main/README.md",
+		"loglevel": "info",
+		"mode": "daemon",
+		"type": "utility",
+		"compact": true,
+		"connectionType": "local",
+		"dataSource": "poll",
+		"messagebox": true,
+		"materializeTab": true,
+		"adminUI": {
+			"config": "none",
+			"tab": "materialize"
+		},
+		"adminTab": {
+			"singleton": true,
+			"name": {
+				"en": "Device Manager",
+				"de": "Gerätemanager",
+				"ru": "Диспетчер устройств",
+				"pt": "Gerenciador de Dispositivos",
+				"nl": "Apparaat beheerder",
+				"fr": "Gestionnaire de périphériques",
+				"it": "Gestore dispositivi",
+				"es": "Administrador de dispositivos",
+				"pl": "Menadżer urządzeń",
+				"zh-cn": "装置经理"
+			},
+			"link": "",
+			"fa-icon": "info"
+		},
+		"eraseOnUpload": true,
+		"dependencies": [
+			{
+				"js-controller": ">=4.0.24"
+			}
+		],
+		"globalDependencies": [
+			{
+				"admin": ">=6.3.7"
+			}
+		]
+	},
+	"native": {},
+	"objects": [],
+	"instanceObjects": []
+}
