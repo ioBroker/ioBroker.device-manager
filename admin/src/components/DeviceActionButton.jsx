@@ -5,7 +5,7 @@ import { FaOrImageIcon } from './FaOrImgIcon';
 import { TooltipButton } from './TooltipButton';
 
 export function DeviceActionButton(props) {
-	const { deviceId, action, refresh, context } = props;
+	const { deviceId, action, refresh, context, actionContext } = props;
 
 	const tooltip = context.getTranslation(action.description);
 
@@ -15,7 +15,7 @@ export function DeviceActionButton(props) {
 			tooltip={tooltip}
 			disabled={action.disabled}
 			Icon={<FaOrImageIcon icon={action.icon} />}
-			onClick={context.deviceHandler(deviceId, action, refresh)}
+			onClick={actionContext.deviceHandler(deviceId, action, context, refresh)}
 		/>
 	);
 }

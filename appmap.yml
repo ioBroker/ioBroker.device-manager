@@ -1,9 +1,0 @@
-name: ioBroker.device-manager
-packages:
-  - path: admin/build
-  - path: admin/lib/fontawesome/js
-  - path: admin/src/i18n
-  - path: lib
-  - path: test
-language: javascript
-appmap_dir: tmp/appmap

@@ -1,39 +1,62 @@
-// import Connection from '@iobroker/adapter-react-v5/Connection';
 import * as React from 'react';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
+/**
+ * InstanceList component
+ * @param {object} params - Parameters
+ * @param {object} params.context - Context object
+ * @param {string} params.selectedInstance - Selected instance
+ * @param {function} params.setSelectedInstance - Set selected instance
+ * @param {function} params.setAdapterInstance - Set adapter instance
+ * @returns {Element}
+ * @constructor
+ */
 export default function InstanceList(params) {
-	const { socket, context, setSelectedInstance, selectedInstance, setAdapterInstance } = params;
+	const { context, setSelectedInstance, selectedInstance, setAdapterInstance } = params;
 	const [instanceList, setInstanceList] = React.useState({});
 
+	/**
+	 * Load adapters
+	 * @returns {void}
+	 */
 	React.useEffect(() => {
 		const loadAdapters = async () => {
 			console.log('Waiting for connection');
-			await socket.waitForFirstConnection();
+			await context.socket.waitForFirstConnection();
 			console.log('Loading adapters...');
-			const result = await socket.sendTo('device-manager.0', 'listInstances');
+			const result = await context.socket.sendTo('device-manager.0', 'listInstances');
 			setInstanceList(result);
-			console.log({ result });
+			console.log('Load Adapters result: ' + { result });
 		};
 		loadAdapters().catch(console.error);
 	}, []);
 
+	/**
+	 * Load instance infos
+	 * @returns {void}
+	 */
 	React.useEffect(() => {
 		if (selectedInstance !== '') {
 			loadInstanceInfos().catch(console.error);
 		}
 	}, [selectedInstance]);
 
+	/**
+	 *	 Handle state change
+	 *	 @param {object} event - Event object
+	 *	 @param {string} event.target.value - Selected instance
+	 *	 @returns {void}
+	 */
 	const handleStateChange = (event) => {
 		setSelectedInstance(event.target.value);
 	};
 
 	const loadInstanceInfos = async () => {
 		console.log(`Loading instance infos for ${selectedInstance}...`);
-		const info = await socket.sendTo(selectedInstance, 'dm:instanceInfo');
+		const info = await context.socket.sendTo(selectedInstance, 'dm:instanceInfo');
 		console.log('instanceInfo', { result: info });
 		if (!info || typeof info !== 'object' || info.apiVersion !== 'v1') {
 			throw new Error(
@@ -45,29 +68,31 @@ export default function InstanceList(params) {
 		setAdapterInstance(info);
 	};
 
-	const actionContext = {
-		instanceHandler: (action) => {
-			return async () => await socket.sendTo(selectedInstance, 'dm:instanceAction', { actionId: action.id });
-		},
-		deviceHandler: (deviceId, action, refresh) => {
-			return async () =>
-				await socket.sendTo(selectedInstance, 'dm:deviceAction', { actionId: action.id, deviceId }, refresh);
-		},
+	/** @type {object} */
+	const instanceLabelText = {
+		en: 'Instance',
+		de: 'Instanz',
+		ru: 'Инстанция',
+		pt: 'Instância',
+		nl: 'Instantie',
+		fr: 'Instance',
+		it: 'Esempio',
+		es: 'Instancia',
+		pl: 'Instancja',
+		'zh-cn': '例',
+		uk: 'Інстанція',
 	};
-
-	context.action = actionContext;
 
 	return (
 		<div>
 			<FormControl>
 				<InputLabel id="instance-select-label" style={{ top: '10px' }}>
-					Instance
+					{context.getTranslation(instanceLabelText)}
 				</InputLabel>
 				<Select
 					labelId="instance-select-label"
 					id="instance-select"
 					value={selectedInstance}
-					label="Select Instance"
 					onChange={handleStateChange}
 					displayEmpty
 					variant="standard"

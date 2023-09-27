@@ -6,7 +6,7 @@ import JsonConfigComponent from '../libs/json-config/JsonConfigComponent';
 
 export function JsonConfig(props) {
 	const { instanceId, socket, schema, data, onChange } = props;
-	console.log('JsonConfig', schema);
+	console.log('JsonConfig', props);
 	if (schema === undefined) {
 		return null;
 	}
