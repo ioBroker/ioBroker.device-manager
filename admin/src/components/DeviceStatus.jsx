@@ -28,11 +28,11 @@ export function DeviceStatus(params) {
 	}
 
 	/** @type {object} */
-	const linkIconStyle = {
+	const iconStyleOK = {
 		fill: '#00ac00',
 	};
 	/** @type {object} */
-	const linkOffIconStyle = {
+	const iconStyleNotOK = {
 		fill: '#ff0000',
 	};
 	/** @type {object} */
@@ -45,21 +45,21 @@ export function DeviceStatus(params) {
 	let batteryIconTooltip;
 	if (typeof status.battery === 'number') {
 		if (status.battery >= 96 && status.battery <= 100) {
-			batteryIconTooltip = <BatteryFullIcon />;
+			batteryIconTooltip = <BatteryFullIcon style={iconStyleOK} />;
 		} else if (status.battery >= 90 && status.battery <= 95) {
-			batteryIconTooltip = <Battery90Icon />;
+			batteryIconTooltip = <Battery90Icon style={iconStyleOK} />;
 		} else if (status.battery >= 80 && status.battery <= 89) {
-			batteryIconTooltip = <Battery80Icon />;
+			batteryIconTooltip = <Battery80Icon style={iconStyleOK} />;
 		} else if (status.battery >= 60 && status.battery <= 79) {
-			batteryIconTooltip = <Battery60Icon />;
+			batteryIconTooltip = <Battery60Icon style={iconStyleOK} />;
 		} else if (status.battery >= 50 && status.battery <= 59) {
-			batteryIconTooltip = <Battery50Icon />;
+			batteryIconTooltip = <Battery50Icon style={iconStyleOK} />;
 		} else if (status.battery >= 30 && status.battery <= 49) {
-			batteryIconTooltip = <Battery30Icon />;
+			batteryIconTooltip = <Battery30Icon style={iconStyleOK} />;
 		} else if (status.battery >= 20 && status.battery <= 29) {
-			batteryIconTooltip = <Battery20Icon />;
+			batteryIconTooltip = <Battery20Icon style={iconStyleNotOK} />;
 		} else {
-			batteryIconTooltip = <BatteryAlertIcon />;
+			batteryIconTooltip = <BatteryAlertIcon style={iconStyleNotOK} />;
 		}
 	}
 
@@ -69,7 +69,7 @@ export function DeviceStatus(params) {
 				<div style={{ ...divStatusStyle, display: 'flex', alignItems: 'center' }}>
 					<Tooltip title={context.getTranslation('connectedIconTooltip')}>
 						<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-							<LinkIcon style={linkIconStyle} />
+							<LinkIcon style={iconStyleOK} />
 						</div>
 					</Tooltip>
 				</div>
@@ -79,7 +79,7 @@ export function DeviceStatus(params) {
 				<div style={{ ...divStatusStyle, display: 'flex', alignItems: 'center' }}>
 					<Tooltip title={context.getTranslation('disconnectedIconTooltip')}>
 						<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-							<LinkOffIcon style={linkOffIconStyle} />
+							<LinkOffIcon style={iconStyleNotOK} />
 						</div>
 					</Tooltip>
 				</div>
@@ -126,7 +126,11 @@ export function DeviceStatus(params) {
 				<div style={{ ...divStatusStyle, display: 'flex', alignItems: 'center' }}>
 					<Tooltip title={context.getTranslation('batteryTooltip')}>
 						<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-							{status.battery ? <BatteryFullIcon /> : <BatteryAlertIcon />}
+							{status.battery ? (
+								<BatteryFullIcon style={iconStyleOK} />
+							) : (
+								<BatteryAlertIcon style={iconStyleNotOK} />
+							)}
 						</div>
 					</Tooltip>
 				</div>
