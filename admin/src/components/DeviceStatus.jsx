@@ -121,6 +121,17 @@ export function DeviceStatus(params) {
 					</Tooltip>
 				</div>
 			)}
+
+			{typeof status.battery === 'boolean' && (
+				<div style={{ ...divStatusStyle, display: 'flex', alignItems: 'center' }}>
+					<Tooltip title={context.getTranslation('batteryTooltip')}>
+						<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+							<BatteryAlertIcon />
+							<p style={{ fontSize: 'small', margin: 0 }}></p>
+						</div>
+					</Tooltip>
+				</div>
+			)}
 		</div>
 	);
 }
