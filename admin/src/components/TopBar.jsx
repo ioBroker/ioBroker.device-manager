@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Grid, TextField } from '@mui/material';
+import { Grid, TextField, Paper } from '@mui/material';
 import InstanceList from './InstanceList';
 import { InstanceActionButton } from './InstanceActionButton';
 
@@ -49,29 +49,20 @@ export default function TopBar(params) {
 	}, [adapterInstance]);
 
 	/** @type {object} */
-	const filterLabelText = {
-		en: 'Filter by name',
-		de: 'Nach Name filtern',
-		ru: 'Фильтровать по имени',
-		pt: 'Filtrar por nome',
-		nl: 'Filteren op naam',
-		fr: 'Filtrer par nom',
-		it: 'Filtra per nome',
-		es: 'Filtrar por nombre',
-		pl: 'Filtruj według nazwy',
-		'zh-cn': '按名称过滤',
-		uk: "Фільтрувати за ім'ям",
-	};
-
-	/** @type {object} */
-	const gridStyle = {
+	const paperStyle = {
 		position: 'sticky',
 		zIndex: 10,
 		top: 0,
-		marginBottom: '10px',
+		paddingBottom: '10px',
+	};
+	/** @type {object} */
+	const gridStyle = {
+		//position: 'sticky',
+		//zIndex: 10,
+		//top: 0,
+		//marginBottom: '10px',
 		display: 'grid',
 		gridTemplateColumns: 'repeat(3, 33%)',
-		background: '#fff',
 	};
 	/** @type {object} */
 	const divStyle = {
@@ -80,33 +71,33 @@ export default function TopBar(params) {
 		top: '5px',
 	};
 	/** @type {object} */
-	const instanceListStyle = {
-		marginLeft: '10px',
-		marginRight: '10px',
+	const textFieldStyle = {
+		position: 'relative',
+		top: '5px',
 	};
 
-	// TODO: Refresh instance list with a button
-
 	return (
-		<Grid item container alignItems="center" style={gridStyle}>
-			<div style={divStyle}>
-				{actions &&
-					adapterInstance.actions.map((a) => (
-						<InstanceActionButton key={a.id} action={a} context={context} />
-					))}
-			</div>
-			<InstanceList
-				style={instanceListStyle}
-				setSelectedInstance={setSelectedInstance}
-				selectedInstance={selectedInstance}
-				setAdapterInstance={setAdapterInstance}
-				context={context}
-			/>
-			<TextField
-				variant="standard"
-				label={context.getTranslation(filterLabelText)}
-				onChange={handleFilterChange}
-			/>
-		</Grid>
+		<Paper style={paperStyle}>
+			<Grid item container alignItems="center" style={gridStyle}>
+				<div style={divStyle}>
+					{actions &&
+						adapterInstance.actions.map((a) => (
+							<InstanceActionButton key={a.id} action={a} context={context} />
+						))}
+				</div>
+				<InstanceList
+					setSelectedInstance={setSelectedInstance}
+					selectedInstance={selectedInstance}
+					setAdapterInstance={setAdapterInstance}
+					context={context}
+				/>
+				<TextField
+					style={textFieldStyle}
+					variant="standard"
+					label={context.getTranslation('filterLabelText')}
+					onChange={handleFilterChange}
+				/>
+			</Grid>
+		</Paper>
 	);
 }

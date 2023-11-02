@@ -40,48 +40,7 @@ export function DeviceStatus(params) {
 		marginLeft: '5px',
 		marginRight: '5px',
 	};
-	/** @type {object} */
-	const batteryTooltip = {
-		en: 'Battery',
-		de: 'Batterie',
-		ru: 'Батарея',
-		pt: 'Bateria',
-		nl: 'Batterij',
-		fr: 'Batterie',
-		it: 'Batteria',
-		es: 'Batería',
-		pl: 'Bateria',
-		'zh-cn': '电池',
-		uk: 'Батарея',
-	};
-	/** @type {object} */
-	const connectedIconTooltip = {
-		en: 'Connected',
-		de: 'Verbunden',
-		ru: 'Подключено',
-		pt: 'Conectado',
-		nl: 'Verbonden',
-		fr: 'Connecté',
-		it: 'Collegato',
-		es: 'Conectado',
-		pl: 'Połączony',
-		'zh-cn': '已连接',
-		uk: 'Підключено',
-	};
-	/** @type {object} */
-	const disconnectedIconTooltip = {
-		en: 'Disconnected',
-		de: 'Getrennt',
-		ru: 'Отключено',
-		pt: 'Desconectado',
-		nl: 'Verbroken',
-		fr: 'Déconnecté',
-		it: 'Disconnesso',
-		es: 'Desconectado',
-		pl: 'Odłączony',
-		'zh-cn': '断开的',
-		uk: 'Відключено',
-	};
+
 	/** @type {object} */
 	let batteryIconTooltip;
 	if (typeof status.battery === 'number') {
@@ -108,7 +67,7 @@ export function DeviceStatus(params) {
 		<div style={{ display: 'flex', alignItems: 'center' }}>
 			{status.connection === 'connected' && (
 				<div style={{ ...divStatusStyle, display: 'flex', alignItems: 'center' }}>
-					<Tooltip title={context.getTranslation(connectedIconTooltip)}>
+					<Tooltip title={context.getTranslation('connectedIconTooltip')}>
 						<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 							<LinkIcon style={linkIconStyle} />
 						</div>
@@ -118,7 +77,7 @@ export function DeviceStatus(params) {
 
 			{status.connection === 'disconnected' && (
 				<div style={{ ...divStatusStyle, display: 'flex', alignItems: 'center' }}>
-					<Tooltip title={context.getTranslation(disconnectedIconTooltip)}>
+					<Tooltip title={context.getTranslation('disconnectedIconTooltip')}>
 						<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 							<LinkOffIcon style={linkOffIconStyle} />
 						</div>
@@ -139,7 +98,7 @@ export function DeviceStatus(params) {
 
 			{typeof status.battery === 'number' && (
 				<div style={{ ...divStatusStyle, display: 'flex', alignItems: 'center' }}>
-					<Tooltip title={context.getTranslation(batteryTooltip)}>
+					<Tooltip title={context.getTranslation('batteryTooltip')}>
 						<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 							{batteryIconTooltip}
 							<p style={{ fontSize: 'small', margin: 0 }}>{status.battery}%</p>
@@ -150,7 +109,7 @@ export function DeviceStatus(params) {
 
 			{typeof status.battery === 'string' && (
 				<div style={{ ...divStatusStyle, display: 'flex', alignItems: 'center' }}>
-					<Tooltip title={context.getTranslation(batteryTooltip)}>
+					<Tooltip title={context.getTranslation('batteryTooltip')}>
 						<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 							<BatteryFullIcon />
 							{status.battery.includes('V') || status.battery.includes('mV') ? (

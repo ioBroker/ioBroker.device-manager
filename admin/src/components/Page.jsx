@@ -14,6 +14,19 @@ import {
 import TopBar from './TopBar';
 import DeviceList from './DeviceList';
 import { JsonConfig } from './JsonConfig';
+import de from '../../i18n/de.json';
+import en from '../../i18n/en.json';
+import ru from '../../i18n/ru.json';
+import pt from '../../i18n/pt.json';
+import nl from '../../i18n/nl.json';
+import fr from '../../i18n/fr.json';
+import it from '../../i18n/it.json';
+import es from '../../i18n/es.json';
+import pl from '../../i18n/pl.json';
+import zhcn from '../../i18n/zh-cn.json';
+import uk from '../../i18n/uk.json';
+
+const i18n = { de, en, ru, pt, nl, fr, it, es, pl, 'zh-cn': zhcn, uk };
 
 /**
  * Page - Main page
@@ -117,7 +130,9 @@ export default function Page(params) {
 	 */
 	context.getTranslation = (text) => {
 		if (typeof text === 'string') {
-			return text;
+			// look for translation in i18n
+			const res = i18n[context.socket.systemLang][text];
+			return res || text;
 		} else if (typeof text === 'object') {
 			return text[context.socket.systemLang] || '';
 		} else {
@@ -225,66 +240,13 @@ export default function Page(params) {
 	};
 
 	/** @type {object} */
-	const cancelButtonText = {
-		en: 'Cancel',
-		de: 'Abbrechen',
-		ru: 'Отмена',
-		pt: 'Cancelar',
-		nl: 'Annuleren',
-		fr: 'Annuler',
-		it: 'Annulla',
-		es: 'Cancelar',
-		pl: 'Anuluj',
-		'zh-cn': '取消',
-		uk: 'Скасувати',
-	};
-	/** @type {object} */
-	const okButtonText = {
-		en: 'OK',
-		de: 'OK',
-		ru: 'OK',
-		pt: 'OK',
-		nl: 'OK',
-		fr: 'OK',
-		it: 'OK',
-		es: 'OK',
-		pl: 'OK',
-		'zh-cn': 'OK',
-		uk: 'OK',
-	};
-	/** @type {object} */
-	const yesButtonText = {
-		en: 'Yes',
-		de: 'Ja',
-		ru: 'Да',
-		pt: 'Sim',
-		nl: 'Ja',
-		fr: 'Oui',
-		it: 'Sì',
-		es: 'Sí',
-		pl: 'Tak',
-		'zh-cn': '是',
-		uk: 'Так',
-	};
-	/** @type {object} */
-	const noButtonText = {
-		en: 'No',
-		de: 'Nein',
-		ru: 'Нет',
-		pt: 'Não',
-		nl: 'Nee',
-		fr: 'Non',
-		it: 'No',
-		es: 'No',
-		pl: 'Nie',
-		'zh-cn': '没有',
-		uk: 'Ні',
-	};
-
-	/** @type {object} */
 	const gridStyle = {
 		justifyContent: 'center',
 		alignItems: 'stretch',
+	};
+	/** @type {object} */
+	const emptyStyle = {
+		padding: '25px',
 	};
 	/** @type {object} */
 	const backdropStyle = {
@@ -305,6 +267,11 @@ export default function Page(params) {
 						context={context}
 					/>
 					<Grid container style={gridStyle}>
+						{devices.length === 0 && (
+							<div style={emptyStyle}>
+								<span>{context.getTranslation('noInstanceSelectedText')}</span>
+							</div>
+						)}
 						<DeviceList
 							selectedInstance={selectedInstance}
 							filter={filter}
@@ -349,10 +316,10 @@ export default function Page(params) {
 					</DialogContent>
 					<DialogActions>
 						<Button onClick={() => confirm?.handleClose(false)} autoFocus hideBackdrop={true}>
-							{context.getTranslation(noButtonText)}
+							{context.getTranslation('noButtonText')}
 						</Button>
 						<Button onClick={() => confirm?.handleClose(true)} autoFocus hideBackdrop={true}>
-							{context.getTranslation(yesButtonText)}
+							{context.getTranslation('yesButtonText')}
 						</Button>
 					</DialogActions>
 				</Dialog>
@@ -371,10 +338,10 @@ export default function Page(params) {
 					</DialogContent>
 					<DialogActions>
 						<Button onClick={() => form?.handleClose()} hideBackdrop={true}>
-							{context.getTranslation(cancelButtonText)}
+							{context.getTranslation('cancelButtonText')}
 						</Button>
 						<Button onClick={() => form?.handleClose(form?.data)} autoFocus hideBackdrop={true}>
-							{context.getTranslation(okButtonText)}
+							{context.getTranslation('okButtonText')}
 						</Button>
 					</DialogActions>
 				</Dialog>

@@ -81,7 +81,7 @@ class DeviceManager extends utils.Adapter {
 								};
 							}
 						} catch (error) {
-							this.log.error(error);
+							//this.log.error(error);
 						}
 					}
 					this.sendTo(

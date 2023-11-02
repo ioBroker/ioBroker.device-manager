@@ -74,7 +74,7 @@ export default function DeviceCard(params) {
 	};
 	/** @type {CSSProperties} */
 	const cardStyle = {
-		backgroundColor: '#fafafa',
+		//backgroundColor: '#fafafa',
 		width: '300px',
 		minHeight: '280px',
 		margin: '10px',
@@ -143,7 +143,7 @@ export default function DeviceCard(params) {
 	/** @type {CSSProperties} */
 	const deviceInfoStyle = {
 		padding: '20px 10px 10px 10px',
-		height: '70px',
+		height: '100px',
 	};
 	/** @type {CSSProperties} */
 	const statusStyle = {
@@ -151,36 +151,8 @@ export default function DeviceCard(params) {
 		height: '41px',
 	};
 
-	/** @type {object} */
-	const manufacturerText = {
-		en: 'Manufacturer',
-		de: 'Hersteller',
-		ru: 'Производитель',
-		pt: 'Fabricante',
-		nl: 'Fabrikant',
-		fr: 'Fabricant',
-		it: 'Produttore',
-		es: 'Fabricante',
-		pl: 'Producent',
-		'zh-cn': '制造商',
-		uk: 'Виробник',
-	};
-	/** @type {object} */
-	const modelText = {
-		en: 'Model',
-		de: 'Modell',
-		ru: 'Модель',
-		pt: 'Modelo',
-		nl: 'Model',
-		fr: 'Modèle',
-		it: 'Modello',
-		es: 'Modelo',
-		pl: 'Model',
-		'zh-cn': '模型',
-		uk: 'Модель',
-	};
-
 	// TODO: Add possibility to change/upload device icon
+	// TODO: Button Copy-to-clipboard for device ID with namespace
 
 	return (
 		<div style={divStyle}>
@@ -218,14 +190,14 @@ export default function DeviceCard(params) {
 						<div>
 							{device.manufacturer ? (
 								<span>
-									<b>{context.getTranslation(manufacturerText)}:</b> {device.manufacturer}
+									<b>{context.getTranslation('manufacturer')}:</b> {device.manufacturer}
 								</span>
 							) : null}
 						</div>
 						<div>
 							{device.model ? (
 								<span>
-									<b>{context.getTranslation(modelText)}:</b> {device.model}
+									<b>{context.getTranslation('model')}:</b> {device.model}
 								</span>
 							) : null}
 						</div>

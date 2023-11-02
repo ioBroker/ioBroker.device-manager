@@ -4,6 +4,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import theme from '@iobroker/adapter-react-v5/Theme';
 import Utils from '@iobroker/adapter-react-v5/Components/Utils';
 import TabApp from './tab-app';
+import { CssBaseline } from '@mui/material';
 
 let themeName = Utils.getThemeName();
 
@@ -12,6 +13,7 @@ function build() {
 	const root = createRoot(container);
 	root.render(
 		<ThemeProvider theme={theme(themeName)}>
+			<CssBaseline />
 			<TabApp
 				adapterName="device-manager"
 				onThemeChange={(_theme) => {

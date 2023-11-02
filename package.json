@@ -1,6 +1,6 @@
 {
   "name": "iobroker.device-manager",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Manage devices from adapters within ioBroker.",
   "author": {
     "name": "Jey Cee",
@@ -74,8 +74,10 @@
   "main": "main.js",
   "files": [
     "admin{,/!(src)/**}/!(tsconfig|tsconfig.*|.eslintrc).json",
-    "admin{,/!(src)/**}/*.{html,css,png,svg,jpg,js}",
+    "admin{,/!(src)/**}/*.{html,css,png,svg,jpg,js,webp}",
     "admin/build/",
+    "admin/lib/fontawesome/*",
+    "i18n/*",
     "lib/",
     "www/",
     "io-package.json",
