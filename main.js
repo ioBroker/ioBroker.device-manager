@@ -64,7 +64,7 @@ class DeviceManager extends utils.Adapter {
 					const res = await this.getObjectViewAsync('system', 'instance', null);
 					const dmInstances = {};
 					for (const i in res.rows) {
-						this.log.info(res.rows[i].id);
+						// this.log.info(res.rows[i].id);
 						// Remove system.adapter. from id
 						const instanceName = res.rows[i].id.substring(15);
 						try {
