@@ -1,6 +1,6 @@
 {
   "name": "iobroker.device-manager",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Manage devices from adapters within ioBroker.",
   "author": {
     "name": "Jey Cee",
