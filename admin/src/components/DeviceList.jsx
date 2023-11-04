@@ -85,7 +85,7 @@ export default function DeviceList(params) {
 		},
 		getTranslation: context.getTranslation,
 	};
-
+	// TODO: Return message if no devices are found
 	return Object.entries(devices).map(([key, device]) => (
 		<DeviceCard
 			title={device.name}

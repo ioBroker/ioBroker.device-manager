@@ -253,7 +253,7 @@ export default function Page(params) {
 		zIndex: 1000,
 	};
 
-	// TODO: Show toast while action cannot be executed because of broken session
+	// TODO: Show toast while action cannot be executed because of broken session or reload page
 
 	return (
 		<div className="App-header">

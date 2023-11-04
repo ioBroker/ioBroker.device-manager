@@ -11,7 +11,6 @@ import BatteryFullIcon from '@mui/icons-material/BatteryFull';
 import BatteryAlertIcon from '@mui/icons-material/BatteryAlert';
 import Tooltip from '@mui/material/Tooltip';
 import * as React from 'react';
-import { FaOrImageIcon } from './FaOrImgIcon';
 
 /**
  * Device Status component
@@ -26,6 +25,8 @@ export function DeviceStatus(params) {
 	if (!status) {
 		return null;
 	}
+
+	console.log('status', status);
 
 	/** @type {object} */
 	const iconStyleOK = {
