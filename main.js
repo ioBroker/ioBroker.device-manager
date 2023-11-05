@@ -64,24 +64,29 @@ class DeviceManager extends utils.Adapter {
 					const res = await this.getObjectViewAsync('system', 'instance', null);
 					const dmInstances = {};
 					for (const i in res.rows) {
-						// this.log.info(res.rows[i].id);
+						//this.log.info(JSON.stringify(res.rows[i]));
+						if (!res?.rows[i]?.value.common.messagebox) {
+							continue;
+						}
+						if (!res?.rows[i]?.value.common.supportedMessages?.deviceManager) {
+							continue;
+						}
+
 						// Remove system.adapter. from id
 						const instanceName = res.rows[i].id.substring(15);
 						try {
-							// Look for instances with apiVersion v1. Timeout after 10 milliseconds to prevent hanging.
-							const instanceInfo = await Promise.race([
-								this.sendToAsync(instanceName, 'dm:instanceInfo', ''),
-								timeout(10),
-							]);
-							if (instanceInfo.apiVersion === 'v1') {
-								const instance = parseInt(instanceName.split('.').pop()); // Get instance number from instance name
-								dmInstances[instanceName] = {
-									title: '',
-									instance: instance,
-								};
+							// Check if the instance is alive by getting the state alive
+							const alive = await this.getForeignStateAsync(`system.adapter.${instanceName}.alive`);
+							if (!alive || !alive.val) {
+								continue;
 							}
+							const instance = parseInt(instanceName.split('.').pop()); // Get instance number from instance name
+							dmInstances[instanceName] = {
+								title: '',
+								instance: instance,
+							};
 						} catch (error) {
-							//this.log.error(error);
+							this.log.error(error);
 						}
 					}
 					this.sendTo(
