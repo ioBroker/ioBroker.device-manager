@@ -85,15 +85,29 @@ export default function DeviceList(params) {
 		},
 		getTranslation: context.getTranslation,
 	};
-	// TODO: Return message if no devices are found
-	return Object.entries(devices).map(([key, device]) => (
-		<DeviceCard
-			title={device.name}
-			key={device.id}
-			device={device}
-			instanceId={selectedInstance}
-			actionContext={actionContext}
-			context={context}
-		/>
-	));
+
+	/** @type {object} */
+	const emptyStyle = {
+		padding: '25px',
+	};
+
+	console.log(devices);
+	if (devices.length === 0 && selectedInstance !== '') {
+		return (
+			<div style={emptyStyle}>
+				<span>{context.getTranslation('noDevicesFoundText')}</span>
+			</div>
+		);
+	} else {
+		return Object.entries(devices).map(([key, device]) => (
+			<DeviceCard
+				title={device.name}
+				key={device.id}
+				device={device}
+				instanceId={selectedInstance}
+				actionContext={actionContext}
+				context={context}
+			/>
+		));
+	}
 }

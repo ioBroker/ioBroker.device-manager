@@ -267,7 +267,7 @@ export default function Page(params) {
 						context={context}
 					/>
 					<Grid container style={gridStyle}>
-						{devices.length === 0 && (
+						{selectedInstance === '' && (
 							<div style={emptyStyle}>
 								<span>{context.getTranslation('noInstanceSelectedText')}</span>
 							</div>
