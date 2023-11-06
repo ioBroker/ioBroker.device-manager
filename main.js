@@ -65,10 +65,10 @@ class DeviceManager extends utils.Adapter {
 					const dmInstances = {};
 					for (const i in res.rows) {
 						//this.log.info(JSON.stringify(res.rows[i]));
-						if (!res?.rows[i]?.value.common.messagebox) {
+						if (!res?.rows[i]?.value?.common.messagebox) {
 							continue;
 						}
-						if (!res?.rows[i]?.value.common.supportedMessages?.deviceManager) {
+						if (!res?.rows[i]?.value?.common.supportedMessages?.deviceManager) {
 							continue;
 						}
 
@@ -80,10 +80,12 @@ class DeviceManager extends utils.Adapter {
 							if (!alive || !alive.val) {
 								continue;
 							}
-							const instance = parseInt(instanceName.split('.').pop()); // Get instance number from instance name
+
+							const instance = instanceName.split('.').pop(); // Get instance number from instance name
+							const instanceNumber = instance !== undefined ? parseInt(instance) : 0;
 							dmInstances[instanceName] = {
 								title: '',
-								instance: instance,
+								instance: instanceNumber,
 							};
 						} catch (error) {
 							this.log.error(error);
