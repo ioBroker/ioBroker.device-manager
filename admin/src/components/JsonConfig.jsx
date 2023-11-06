@@ -5,7 +5,7 @@ import JsonConfigComponent from '../libs/json-config/JsonConfigComponent';
 // import { JsonFormData, JsonFormSchema } from "@jey-cee/dm-utils";
 
 export function JsonConfig(props) {
-	const { instanceId, socket, schema, data, onChange } = props;
+	const { instanceId, context, schema, data, onChange } = props;
 	console.log('JsonConfig', props);
 	if (schema === undefined) {
 		return null;
@@ -18,7 +18,7 @@ export function JsonConfig(props) {
 		<>
 			{error && <div>{error}</div>}
 			<JsonConfigComponent
-				socket={socket}
+				socket={context.socket}
 				adapterName={adapterName}
 				instance={parseInt(instance)}
 				schema={schema}

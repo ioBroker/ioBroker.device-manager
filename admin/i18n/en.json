@@ -13,5 +13,7 @@
 	"filterLabelText": "Filter by name",
 	"instanceLabelText": "Instance",
 	"refreshInstanceList": "Refresh instance list",
-	"noDevicesFoundText": "No devices found"
+	"noDevicesFoundText": "No devices found",
+	"copied": "Copied",
+	"toClipboard": "to clipboard"
 }

@@ -96,5 +96,15 @@
 	},
 	"native": {},
 	"objects": [],
-	"instanceObjects": []
+	"instanceObjects": [
+		{
+			"_id": "",
+			"type": "meta",
+			"common": {
+				"name": "User files for device manager",
+				"type": "meta.user"
+			},
+			"native": {}
+		}
+	]
 }

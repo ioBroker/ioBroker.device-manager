@@ -12,5 +12,7 @@
 	"noInstanceSelectedText": "Bitte Instanz auswählen",
 	"filterLabelText": "Nach Name filtern",
 	"instanceLabelText": "Instanz",
-	"refreshInstanceList": "Instanz Liste aktualisieren"
+	"refreshInstanceList": "Instanz Liste aktualisieren",
+	"copied": " ",
+	"toClipboard": " in die Zwischenablage kopiert"
 }

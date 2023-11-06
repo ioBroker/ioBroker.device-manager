@@ -85,7 +85,7 @@ export function DeviceRow(props) {
 						{details && (
 							<JsonConfig
 								instanceId={instance}
-								socket={context.socket}
+								context={context}
 								schema={details.schema}
 								data={data}
 								onChange={setData}

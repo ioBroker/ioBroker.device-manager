@@ -7,7 +7,6 @@ import TabApp from './tab-app';
 import { CssBaseline } from '@mui/material';
 
 let themeName = Utils.getThemeName();
-
 function build() {
 	const container = document.getElementById('root');
 	const root = createRoot(container);

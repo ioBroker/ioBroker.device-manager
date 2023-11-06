@@ -10,6 +10,7 @@ import {
 	DialogTitle,
 	Grid,
 	Paper,
+	Snackbar,
 } from '@mui/material';
 import TopBar from './TopBar';
 import DeviceList from './DeviceList';
@@ -124,6 +125,14 @@ export default function Page(params) {
 	const [refreshDevices, setRefreshDevices] = React.useState(false);
 
 	/**
+	 * Show toast
+	 * @type {string}
+	 * @default undefined
+	 * @description undefined = don't show toast, string = show toast
+	 */
+	const [showToast, setShowToast] = React.useState(undefined);
+
+	/**
 	 * Get Translation
 	 * @param {string | object} text - Text to translate
 	 * @returns {string}
@@ -200,21 +209,28 @@ export default function Page(params) {
 					context.sendActionToInstance('dm:actionProgress', { origin: response.origin });
 					break;
 				case 'result':
-					if (response.result.refresh === true) {
-						setDevices([]);
-						//await loadData();
-						setRefreshDevices(true);
-						console.log('Refreshing all');
-					} else if (response.result.refresh === 'instance') {
-						console.log('Refreshing instance infos: ' + selectedInstance);
-					} else if (response.result.refresh === 'device') {
-						if (refresh) {
+					console.log('Response content', response.result);
+					if (response.result.refresh) {
+						if (response.result.refresh === true) {
 							setDevices([]);
+							//await loadData();
 							setRefreshDevices(true);
-							console.log('Refreshing device infos: ' + selectedInstance);
+							console.log('Refreshing all');
+						} else if (response.result.refresh === 'instance') {
+							console.log('Refreshing instance infos: ' + selectedInstance);
+						} else if (response.result.refresh === 'device') {
+							if (refresh) {
+								setDevices([]);
+								setRefreshDevices(true);
+								console.log('Refreshing device infos: ' + selectedInstance);
+							}
+						} else {
+							console.log('Not refreshing anything');
 						}
-					} else {
-						console.log('Not refreshing anything');
+					}
+					if (response.result.error) {
+						console.error('Error: ' + response.result.error);
+						//setShowToast(response.result.error.message);
 					}
 					setShowSpinner(false);
 					break;
@@ -226,6 +242,7 @@ export default function Page(params) {
 	/**
 	 * Handle form change
 	 * @param {object} data
+	 * @returns {Promise<void>}
 	 * @returns {Promise<void>}
 	 */
 	const handleFormChange = (data) => {
@@ -346,6 +363,12 @@ export default function Page(params) {
 					</DialogActions>
 				</Dialog>
 			</div>
+			<Snackbar
+				open={!!showToast}
+				autoHideDuration={6000}
+				onClose={() => setShowToast(undefined)}
+				message={showToast}
+			/>
 		</div>
 	);
 }
