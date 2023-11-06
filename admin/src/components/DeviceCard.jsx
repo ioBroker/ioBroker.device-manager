@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Paper, Button, Typography, Dialog, DialogActions, DialogContent } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { DeviceActionButton } from './DeviceActionButton';
 import { DeviceStatus } from './DeviceStatus';
 import { JsonConfig } from './JsonConfig';
+import DeviceImageUpload from './DeviceImageUpload';
 
 /**
  * Device Card Component
@@ -23,10 +24,42 @@ export default function DeviceCard(params) {
 	const [open, setOpen] = React.useState(false);
 	const [details, setDetails] = React.useState();
 	const [data, setData] = React.useState({});
+	const [icon, setIcon] = useState(device.icon || '/adapter/device-manager/no_image.webp');
+	// const [uploadedImage, setUploadedImage] = React.useState(null);
 
 	const hasDetails = device.hasDetails;
 	const hasActions = device.actions?.length > 0;
 	const status = !device.status ? [] : Array.isArray(device.status) ? device.status : [device.status];
+
+	useEffect(() => {
+		async function fetchIcon() {
+			if (!device.icon) {
+				// try to load the icon from file storage
+				const fileName = `${device.manufacturer ? device.manufacturer + '_' : ''}${
+					device.model ? device.model : device.id
+				}`;
+				const url = `/files/${context.instanceId.replace('system.adapter.', '')}/${fileName}.webp`;
+
+				try {
+					const response = await fetch(url);
+					if (response.ok) {
+						const blob = await response.blob();
+						const reader = new FileReader();
+						reader.onloadend = () => {
+							setIcon(reader.result);
+						};
+						reader.readAsDataURL(blob);
+					} else {
+						throw new Error('Response not ok');
+					}
+				} catch (error) {
+					setIcon('/adapter/device-manager/no_image.webp');
+				}
+			}
+		}
+
+		fetchIcon();
+	}, [device, context.instanceId]);
 
 	/**
 	 * Load the device details
@@ -65,6 +98,27 @@ export default function DeviceCard(params) {
 	 */
 	const handleClose = () => setOpen(false);
 
+	const handleImageClick = async (imageData) => {
+		if (imageData) {
+			setIcon(imageData);
+		}
+	};
+
+	/**
+	 * Copy the device ID to the clipboard
+	 * @returns {void}
+	 */
+	const copyToClipboard = async () => {
+		const textToCopy = device.id;
+		const result = await navigator.clipboard.writeText(textToCopy);
+		if (result) {
+			console.log(`Failed to copy ${textToCopy} to clipboard!`);
+		} else {
+			//alert(`Copied ${textToCopy} to clipboard!`);
+			alert(`${context.getTranslation('copied')} ${textToCopy} ${context.getTranslation('toClipboard')}!`);
+		}
+	};
+
 	React.useEffect(() => setData(details?.data || {}), [details]);
 
 	// Styles for the device card
@@ -93,15 +147,18 @@ export default function DeviceCard(params) {
 		borderRadius: '4px 4px 0 0',
 	};
 	/** @type {CSSProperties} */
-	const imgStyle = {
-		top: 0,
-		left: 0,
-		width: '45px',
+	const imgAreaStyle = {
 		height: '45px',
-		margin: 'auto 0',
+		width: '45px',
+		margin: 'auto',
+		justifyContent: 'center',
+		display: 'grid',
+	};
+	/** @type {CSSProperties} */
+	const imgStyle = {
 		zIndex: 2,
-		position: 'relative',
-		backgroundSize: 'cover',
+		maxWidth: '100%',
+		maxHeight: '100%',
 	};
 	/** @type {CSSProperties} */
 	const titleStyle = {
@@ -151,9 +208,6 @@ export default function DeviceCard(params) {
 		height: '41px',
 	};
 
-	// TODO: Add possibility to change/upload device icon
-	// TODO: Button Copy-to-clipboard for device ID with namespace
-
 	return (
 		<div style={divStyle}>
 			<Paper
@@ -163,11 +217,17 @@ export default function DeviceCard(params) {
 				onMouseLeave={() => setShadow('0px 4px 8px rgba(0, 0, 0, 0.1)')}
 			>
 				<div style={headerStyle}>
-					<img
-						src={device.icon || '/adapter/device-manager/no_image.webp'}
-						alt="placeholder image"
-						style={imgStyle}
-					/>
+					<div style={imgAreaStyle}>
+						<DeviceImageUpload
+							context={context}
+							instanceId={instanceId}
+							deviceId={device.id}
+							manufacturer={device.manufacturer}
+							model={device.model}
+							onImageSelect={handleImageClick}
+						/>
+						<img src={icon} alt="placeholder image" style={imgStyle} />
+					</div>
 					<div style={titleStyle}>{title}</div>
 					{hasDetails ? (
 						<Button variant="contained" style={detailsButtonStyle} onClick={openModal}>
@@ -183,7 +243,7 @@ export default function DeviceCard(params) {
 				<div style={bodyStyle}>
 					<Typography variant="body1" style={deviceInfoStyle}>
 						<div>
-							<span>
+							<span onClick={copyToClipboard}>
 								<b>ID:</b> {device.id.replace(/.*\.\d\./, '')}
 							</span>
 						</div>

@@ -4,12 +4,10 @@
  * Created with @iobroker/create-adapter v2.3.0
  */
 
-// The adapter-core module gives you access to the core ioBroker functions
-// you need to create an adapter
 const utils = require('@iobroker/adapter-core');
 
-// Load your modules here, e.g.:
-// const fs = require("fs");
+const fs = require('fs');
+const path = require('path');
 
 class DeviceManager extends utils.Adapter {
 	/**
@@ -58,51 +56,67 @@ class DeviceManager extends utils.Adapter {
 	async onMessage(obj) {
 		this.log.info('onMessage' + JSON.stringify(obj));
 		if (typeof obj === 'object') {
-			if (obj.command === 'listInstances') {
-				// Send response in callback if required
-				if (obj.callback) {
-					const res = await this.getObjectViewAsync('system', 'instance', null);
-					const dmInstances = {};
-					for (const i in res.rows) {
-						//this.log.info(JSON.stringify(res.rows[i]));
-						if (!res?.rows[i]?.value?.common.messagebox) {
-							continue;
-						}
-						if (!res?.rows[i]?.value?.common.supportedMessages?.deviceManager) {
-							continue;
-						}
-
-						// Remove system.adapter. from id
-						const instanceName = res.rows[i].id.substring(15);
-						try {
-							// Check if the instance is alive by getting the state alive
-							const alive = await this.getForeignStateAsync(`system.adapter.${instanceName}.alive`);
-							if (!alive || !alive.val) {
+			switch (obj.command) {
+				case 'listInstances': {
+					// Send response in callback if required
+					if (obj.callback) {
+						const res = await this.getObjectViewAsync('system', 'instance', null);
+						const dmInstances = {};
+						for (const i in res.rows) {
+							//this.log.info(JSON.stringify(res.rows[i]));
+							if (!res?.rows[i]?.value?.common.messagebox) {
+								continue;
+							}
+							if (!res?.rows[i]?.value?.common.supportedMessages?.deviceManager) {
 								continue;
 							}
 
-							const instance = instanceName.split('.').pop(); // Get instance number from instance name
-							const instanceNumber = instance !== undefined ? parseInt(instance) : 0;
-							dmInstances[instanceName] = {
-								title: '',
-								instance: instanceNumber,
-							};
-						} catch (error) {
-							this.log.error(error);
+							// Remove system.adapter. from id
+							const instanceName = res.rows[i].id.substring(15);
+							try {
+								// Check if the instance is alive by getting the state alive
+								const alive = await this.getForeignStateAsync(`system.adapter.${instanceName}.alive`);
+								if (!alive || !alive.val) {
+									continue;
+								}
+
+								const instance = instanceName.split('.').pop(); // Get instance number from instance name
+								const instanceNumber = instance !== undefined ? parseInt(instance) : 0;
+								dmInstances[instanceName] = {
+									title: '',
+									instance: instanceNumber,
+								};
+							} catch (error) {
+								this.log.error(error);
+							}
 						}
+						this.sendTo(
+							obj.from,
+							obj.command,
+							dmInstances,
+							/*{
+								"enocean2mqtt.0": {
+									title: "EnOcean2MQTT",
+									instance: 0,
+								},
+							},*/
+							obj.callback,
+						);
 					}
-					this.sendTo(
-						obj.from,
-						obj.command,
-						dmInstances,
-						/*{
-							"enocean2mqtt.0": {
-								title: "EnOcean2MQTT",
-								instance: 0,
-							},
-						},*/
-						obj.callback,
-					);
+					break;
+				}
+				case 'saveImage': {
+					this.log.info('saveImage' + JSON.stringify(obj));
+					// Save image to iobroker file system
+					const fileName = obj.message.fileName;
+					const fileData = obj.message.fileData;
+					// convert base64 to binary string
+					const base64Data = fileData.replace(/^data:image\/webp;base64,/, '');
+					const imageBuffer = Buffer.from(base64Data, 'base64');
+					const response = await this.writeFileAsync(this.namespace, fileName, imageBuffer);
+					this.log.info('saveImage response: ' + JSON.stringify(response));
+					this.sendTo(obj.from, obj.command, response, obj.callback);
+					break;
 				}
 			}
 		}
