@@ -9,6 +9,7 @@ import Battery80Icon from '@mui/icons-material/Battery80';
 import Battery90Icon from '@mui/icons-material/Battery90';
 import BatteryFullIcon from '@mui/icons-material/BatteryFull';
 import BatteryAlertIcon from '@mui/icons-material/BatteryAlert';
+import WarningIcon from '@mui/icons-material/Warning';
 import Tooltip from '@mui/material/Tooltip';
 import * as React from 'react';
 
@@ -26,8 +27,6 @@ export function DeviceStatus(params) {
 		return null;
 	}
 
-	console.log('status', status);
-
 	/** @type {object} */
 	const iconStyleOK = {
 		fill: '#00ac00',
@@ -35,6 +34,10 @@ export function DeviceStatus(params) {
 	/** @type {object} */
 	const iconStyleNotOK = {
 		fill: '#ff0000',
+	};
+	/** @type {object} */
+	const iconStyleWarning = {
+		fill: '#ff9900',
 	};
 	/** @type {object} */
 	const divStatusStyle = {
@@ -132,6 +135,16 @@ export function DeviceStatus(params) {
 							) : (
 								<BatteryAlertIcon style={iconStyleNotOK} />
 							)}
+						</div>
+					</Tooltip>
+				</div>
+			)}
+
+			{status.warning && (
+				<div style={{ ...divStatusStyle, display: 'flex', alignItems: 'center' }}>
+					<Tooltip title={status.warning}>
+						<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+							<WarningIcon style={iconStyleWarning} />
 						</div>
 					</Tooltip>
 				</div>
