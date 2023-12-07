@@ -79,37 +79,35 @@ export default function InstanceList(params) {
 		top: '5px',
 	};
 
-	return (
-		<div style={instanceListStyle}>
-			<div>
-				<TooltipButton
-					tooltip={context.getTranslation('refreshInstanceList')}
-					Icon={<FaOrImageIcon icon="fa-solid fa-arrows-rotate" />}
-					onClick={() => {
-						loadInstanceInfos().catch(console.error);
-					}}
-				/>
-				<FormControl>
-					<InputLabel id="instance-select-label" style={{ top: '10px' }}>
-						{context.getTranslation('instanceLabelText')}
-					</InputLabel>
-					<Select
-						labelId="instance-select-label"
-						id="instance-select"
-						value={selectedInstance}
-						onChange={handleStateChange}
-						displayEmpty
-						variant="standard"
-						sx={{ minWidth: 120 }}
-					>
-						{Object.entries(instanceList).map(([id]) => (
-							<MenuItem key={id} value={id}>
-								{id}
-							</MenuItem>
-						))}
-					</Select>
-				</FormControl>
-			</div>
+	return <div style={instanceListStyle}>
+		<div>
+			<TooltipButton
+				tooltip={context.getTranslation('refreshInstanceList')}
+				Icon={<FaOrImageIcon icon="fa-solid fa-arrows-rotate" />}
+				onClick={() => {
+					loadInstanceInfos().catch(console.error);
+				}}
+			/>
+			<FormControl>
+				<InputLabel id="instance-select-label" style={{ top: '10px' }}>
+					{context.getTranslation('instanceLabelText')}
+				</InputLabel>
+				<Select
+					labelId="instance-select-label"
+					id="instance-select"
+					value={selectedInstance}
+					onChange={handleStateChange}
+					displayEmpty
+					variant="standard"
+					sx={{ minWidth: 120 }}
+				>
+					{Object.entries(instanceList).map(([id]) => (
+						<MenuItem key={id} value={id}>
+							{id}
+						</MenuItem>
+					))}
+				</Select>
+			</FormControl>
 		</div>
-	);
+	</div>;
 }

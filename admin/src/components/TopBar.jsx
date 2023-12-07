@@ -26,7 +26,7 @@ export default function TopBar(params) {
 	 * @param {string} event.target.value - Filter value
 	 * @returns {void}
 	 */
-	const handleFilterChange = (event) => {
+	const handleFilterChange = event => {
 		if (timeoutId) {
 			clearTimeout(timeoutId);
 		}
@@ -76,28 +76,24 @@ export default function TopBar(params) {
 		top: '5px',
 	};
 
-	return (
-		<Paper style={paperStyle}>
-			<Grid item container alignItems="center" style={gridStyle}>
-				<div style={divStyle}>
-					{actions &&
-						adapterInstance.actions.map((a) => (
-							<InstanceActionButton key={a.id} action={a} context={context} />
-						))}
-				</div>
-				<InstanceList
-					setSelectedInstance={setSelectedInstance}
-					selectedInstance={selectedInstance}
-					setAdapterInstance={setAdapterInstance}
-					context={context}
-				/>
-				<TextField
-					style={textFieldStyle}
-					variant="standard"
-					label={context.getTranslation('filterLabelText')}
-					onChange={handleFilterChange}
-				/>
-			</Grid>
-		</Paper>
-	);
+	return <Paper style={paperStyle}>
+		<Grid item container alignItems="center" style={gridStyle}>
+			<div style={divStyle}>
+				{actions && adapterInstance.actions.map((a) =>
+					<InstanceActionButton key={a.id} action={a} context={context} />)}
+			</div>
+			<InstanceList
+				setSelectedInstance={setSelectedInstance}
+				selectedInstance={selectedInstance}
+				setAdapterInstance={setAdapterInstance}
+				context={context}
+			/>
+			<TextField
+				style={textFieldStyle}
+				variant="standard"
+				label={context.getTranslation('filterLabelText')}
+				onChange={handleFilterChange}
+			/>
+		</Grid>
+	</Paper>;
 }

@@ -1,7 +1,6 @@
 import * as React from 'react';
 
 import GenericApp from '@iobroker/adapter-react-v5/GenericApp';
-import theme from '@iobroker/adapter-react-v5/Theme';
 import Page from './components/Page';
 
 /**
@@ -36,6 +35,7 @@ class TabApp extends GenericApp {
 				it: require('../i18n/it.json'),
 				es: require('../i18n/es.json'),
 				pl: require('../i18n/pl.json'),
+				uk: require('../i18n/uk.json'),
 				'zh-cn': require('../i18n/zh-cn.json'),
 			},
 		};
@@ -56,13 +56,11 @@ class TabApp extends GenericApp {
 			minHeight: '100vh',
 		};
 
-		return (
-			<div className="App" style={appStyle}>
-				<Page context={this} />
-				{this.renderError()}
-				{this.renderToast()}
-			</div>
-		);
+		return <div className="App" style={appStyle}>
+			<Page context={this} />
+			{this.renderError()}
+			{this.renderToast()}
+		</div>;
 	}
 }
 

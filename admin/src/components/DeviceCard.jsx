@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
+
 import { Paper, Button, Typography, Dialog, DialogActions, DialogContent } from '@mui/material';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+
+import { MoreVert as MoreVertIcon } from '@mui/icons-material';
+
 import { DeviceActionButton } from './DeviceActionButton';
 import { DeviceStatus } from './DeviceStatus';
 import { JsonConfig } from './JsonConfig';

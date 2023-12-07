@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
-function DeviceImageUpload(prams) {
-	const { context, instanceId, manufacturer, model, deviceId, onImageSelect } = prams;
+function DeviceImageUpload(params) {
+	const { context, manufacturer, model, deviceId, onImageSelect } = params;
 	const [selectedImage, setSelectedImage] = useState(null);
 
 	const handleImageUpload = async (event) => {
@@ -61,7 +61,7 @@ function DeviceImageUpload(prams) {
 	};
 
 	/** @type {CSSProperties} */
-	const imageUploadButtonSyle = {
+	const imageUploadButtonStyle = {
 		// make the button invisible but still clickable
 		opacity: 0,
 		position: 'absolute',
@@ -70,11 +70,9 @@ function DeviceImageUpload(prams) {
 		zIndex: 3,
 	};
 
-	return (
-		<div>
-			<input style={imageUploadButtonSyle} type="file" accept="image/*" onChange={handleImageUpload} />
-		</div>
-	);
+	return <div>
+		<input style={imageUploadButtonStyle} type="file" accept="image/*" onChange={handleImageUpload} />
+	</div>;
 }
 
 export default DeviceImageUpload;

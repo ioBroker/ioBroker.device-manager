@@ -14,6 +14,6 @@ export function FaOrImageIcon(props) {
 		} else {
 			faIcon = `fas fa-${icon}`;
 		}
-		return <i className={faIcon}></i>;
+		return <i className={faIcon} />;
 	}
 }

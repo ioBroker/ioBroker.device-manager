@@ -7,15 +7,12 @@ export function TooltipButton(props) {
 	//const IconButton = toggle ? ToggleButton : Button;
 	const text = !!label && <Typography variant="button">{label}</Typography>;
 	//const Btn = ToggleButton;
-	return !!disabled ? (
-		<IconButton disabled={true} size="large" {...other}>
-			{Icon} {text}
-		</IconButton>
-	) : (
+	return !!disabled ? <IconButton disabled={true} size="large" {...other}>
+		{Icon} {text}
+	</IconButton> :
 		<Tooltip title={tooltip}>
 			<IconButton {...other} size="large">
 				{Icon} {text}
 			</IconButton>
-		</Tooltip>
-	);
+		</Tooltip>;
 }

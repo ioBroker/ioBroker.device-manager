@@ -42,58 +42,50 @@ export function DeviceRow(props) {
 
 	const status = !device.status ? [] : Array.isArray(device.status) ? device.status : [device.status];
 
-	return (
-		<>
-			<TableRow>
-				{hasDetails && (
-					<TableCell>
-						{device.hasDetails && (
-							<IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
-								{open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-							</IconButton>
-						)}
-					</TableCell>
+	return <>
+		<TableRow>
+			{hasDetails && <TableCell>
+				{device.hasDetails && (
+					<IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
+						{open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+					</IconButton>
 				)}
-				<TableCell>{device.id}</TableCell>
-				<TableCell>{device.name}</TableCell>
-				<TableCell>
-					{status.map((s, i) => (
-						<DeviceStatus key={i} status={s}></DeviceStatus>
-					))}
-				</TableCell>
-				{hasActions && (
-					<TableCell>
-						{!!device.actions?.length && (
-							<ButtonGroup size="small" sx={{ height: 36 }}>
-								{device.actions.map((a) => (
-									<DeviceActionButton
-										key={a.id}
-										deviceId={device.id}
-										action={a}
-										refresh={refresh}
-										context={context}
-									/>
-								))}
-							</ButtonGroup>
-						)}
-					</TableCell>
-				)}
-			</TableRow>
-			{open && (
-				<TableRow>
-					<TableCell colSpan={hasActions ? 5 : 4} sx={{ backgroundColor: '#EEEEEE' }}>
-						{details && (
-							<JsonConfig
-								instanceId={instance}
+			</TableCell>}
+			<TableCell>{device.id}</TableCell>
+			<TableCell>{device.name}</TableCell>
+			<TableCell>
+				{status.map((s, i) => (
+					<DeviceStatus key={i} status={s}></DeviceStatus>
+				))}
+			</TableCell>
+			{hasActions && <TableCell>
+				{!!device.actions?.length && (
+					<ButtonGroup size="small" sx={{ height: 36 }}>
+						{device.actions.map((a) => (
+							<DeviceActionButton
+								key={a.id}
+								deviceId={device.id}
+								action={a}
+								refresh={refresh}
 								context={context}
-								schema={details.schema}
-								data={data}
-								onChange={setData}
 							/>
-						)}
-					</TableCell>
-				</TableRow>
-			)}
-		</>
-	);
+						))}
+					</ButtonGroup>
+				)}
+			</TableCell>}
+		</TableRow>
+		{open && <TableRow>
+			<TableCell colSpan={hasActions ? 5 : 4} sx={{ backgroundColor: '#EEEEEE' }}>
+				{details && (
+					<JsonConfig
+						instanceId={instance}
+						context={context}
+						schema={details.schema}
+						data={data}
+						onChange={setData}
+					/>
+				)}
+			</TableCell>
+		</TableRow>}
+	</>;
 }

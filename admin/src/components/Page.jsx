@@ -12,6 +12,7 @@ import {
 	Paper,
 	Snackbar,
 } from '@mui/material';
+
 import TopBar from './TopBar';
 import DeviceList from './DeviceList';
 import { JsonConfig } from './JsonConfig';

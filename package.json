@@ -35,10 +35,11 @@
     "@alcalzone/release-script-plugin-license": "^3.5.9",
     "@alcalzone/release-script-plugin-manual-review": "^3.5.9",
     "@iobroker/adapter-dev": "^1.2.0",
-    "@iobroker/adapter-react-v5": "4.7.6",
+    "@iobroker/adapter-react-v5": "4.7.11",
     "@iobroker/testing": "^4.1.0",
     "@mui/icons-material": "^5.14.11",
-    "@mui/material": "^5.14.19",
+    "@mui/material": "5.14.14",
+    "@mui/styles": "5.14.14",
     "@mui/x-date-pickers": "^6.12.1",
     "@tsconfig/node16": "^1.0.3",
     "@types/chai": "^4.3.4",
@@ -98,7 +99,8 @@
     "check": "tsc --noEmit -p tsconfig.check.json",
     "lint": "eslint --ext .js,.jsx .",
     "translate": "translate-adapter",
-    "release": "release-script"
+    "release": "release-script",
+    "npm": "npm i -f"
   },
   "bugs": {
     "url": "https://github.com/Jey Cee/ioBroker.device-manager/issues"

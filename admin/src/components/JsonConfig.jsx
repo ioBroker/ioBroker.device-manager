@@ -1,6 +1,6 @@
 // import Connection from "@iobroker/adapter-react-v5/Connection";
 import React from 'react';
-import JsonConfigComponent from '../libs/json-config/JsonConfigComponent';
+import JsonConfigComponent from '@iobroker/adapter-react-v5/Components/JsonConfigComponent';
 
 // import { JsonFormData, JsonFormSchema } from "@jey-cee/dm-utils";
 
@@ -14,22 +14,20 @@ export function JsonConfig(props) {
 
 	const [adapterName, instance] = instanceId.split('.', 2);
 
-	return (
-		<>
-			{error && <div>{error}</div>}
-			<JsonConfigComponent
-				socket={context.socket}
-				adapterName={adapterName}
-				instance={parseInt(instance)}
-				schema={schema}
-				data={data}
-				onError={setError}
-				onChange={(data, _changed) => {
-					onChange(data);
-				}}
-			/>
-		</>
-	);
+	return <>
+		{error && <div>{error}</div>}
+		<JsonConfigComponent
+			socket={context.socket}
+			adapterName={adapterName}
+			instance={parseInt(instance)}
+			schema={schema}
+			data={data}
+			onError={setError}
+			onChange={(data, _changed) => {
+				onChange(data);
+			}}
+		/>
+	</>;
 	/*
     JSON adapter config:
 			className={classes.scroll}

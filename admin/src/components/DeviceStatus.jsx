@@ -1,17 +1,21 @@
-import LinkIcon from '@mui/icons-material/Link';
-import LinkOffIcon from '@mui/icons-material/LinkOff';
-import NetworkCheckIcon from '@mui/icons-material/NetworkCheck';
-import Battery20Icon from '@mui/icons-material/Battery20';
-import Battery30Icon from '@mui/icons-material/Battery30';
-import Battery50Icon from '@mui/icons-material/Battery50';
-import Battery60Icon from '@mui/icons-material/Battery60';
-import Battery80Icon from '@mui/icons-material/Battery80';
-import Battery90Icon from '@mui/icons-material/Battery90';
-import BatteryFullIcon from '@mui/icons-material/BatteryFull';
-import BatteryAlertIcon from '@mui/icons-material/BatteryAlert';
-import WarningIcon from '@mui/icons-material/Warning';
-import Tooltip from '@mui/material/Tooltip';
 import * as React from 'react';
+
+import { Tooltip } from '@mui/material';
+
+import {
+	Link as LinkIcon,
+	LinkOff as LinkOffIcon,
+	NetworkCheck as NetworkCheckIcon,
+	Battery20 as Battery20Icon,
+	Battery30 as Battery30Icon,
+	Battery50 as Battery50Icon,
+	Battery60 as Battery60Icon,
+	Battery80 as Battery80Icon,
+	Battery90 as Battery90Icon,
+	BatteryFull as BatteryFullIcon,
+	BatteryAlert as BatteryAlertIcon,
+	Warning as WarningIcon,
+} from '@mui/icons-material';
 
 /**
  * Device Status component
@@ -67,88 +71,72 @@ export function DeviceStatus(params) {
 		}
 	}
 
-	return (
-		<div style={{ display: 'flex', alignItems: 'center' }}>
-			{status.connection === 'connected' && (
-				<div style={{ ...divStatusStyle, display: 'flex', alignItems: 'center' }}>
-					<Tooltip title={context.getTranslation('connectedIconTooltip')}>
-						<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-							<LinkIcon style={iconStyleOK} />
-						</div>
-					</Tooltip>
+	return <div style={{ display: 'flex', alignItems: 'center' }}>
+		{status.connection === 'connected' && <div style={{ ...divStatusStyle, display: 'flex', alignItems: 'center' }}>
+			<Tooltip title={context.getTranslation('connectedIconTooltip')}>
+				<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+					<LinkIcon style={iconStyleOK} />
 				</div>
-			)}
+			</Tooltip>
+		</div>}
 
-			{status.connection === 'disconnected' && (
-				<div style={{ ...divStatusStyle, display: 'flex', alignItems: 'center' }}>
-					<Tooltip title={context.getTranslation('disconnectedIconTooltip')}>
-						<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-							<LinkOffIcon style={iconStyleNotOK} />
-						</div>
-					</Tooltip>
+		{status.connection === 'disconnected' && <div style={{ ...divStatusStyle, display: 'flex', alignItems: 'center' }}>
+			<Tooltip title={context.getTranslation('disconnectedIconTooltip')}>
+				<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+					<LinkOffIcon style={iconStyleNotOK} />
 				</div>
-			)}
+			</Tooltip>
+		</div>}
 
-			{status.rssi && (
-				<div style={{ ...divStatusStyle, display: 'flex', alignItems: 'center' }}>
-					<Tooltip title="RSSI">
-						<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-							<NetworkCheckIcon />
-							<p style={{ fontSize: 'small', margin: 0 }}>{status.rssi}</p>
-						</div>
-					</Tooltip>
+		{status.rssi && <div style={{ ...divStatusStyle, display: 'flex', alignItems: 'center' }}>
+			<Tooltip title="RSSI">
+				<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+					<NetworkCheckIcon />
+					<p style={{ fontSize: 'small', margin: 0 }}>{status.rssi}</p>
 				</div>
-			)}
+			</Tooltip>
+		</div>}
 
-			{typeof status.battery === 'number' && (
-				<div style={{ ...divStatusStyle, display: 'flex', alignItems: 'center' }}>
-					<Tooltip title={context.getTranslation('batteryTooltip')}>
-						<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-							{batteryIconTooltip}
-							<p style={{ fontSize: 'small', margin: 0 }}>{status.battery}%</p>
-						</div>
-					</Tooltip>
+		{typeof status.battery === 'number' && <div style={{ ...divStatusStyle, display: 'flex', alignItems: 'center' }}>
+			<Tooltip title={context.getTranslation('batteryTooltip')}>
+				<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+					{batteryIconTooltip}
+					<p style={{ fontSize: 'small', margin: 0 }}>{status.battery}%</p>
 				</div>
-			)}
+			</Tooltip>
+		</div>}
 
-			{typeof status.battery === 'string' && (
-				<div style={{ ...divStatusStyle, display: 'flex', alignItems: 'center' }}>
-					<Tooltip title={context.getTranslation('batteryTooltip')}>
-						<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-							<BatteryFullIcon />
-							{status.battery.includes('V') || status.battery.includes('mV') ? (
-								<p style={{ fontSize: 'small', margin: 0 }}>{status.battery} V</p>
-							) : (
-								<p style={{ fontSize: 'small', margin: 0 }}>{status.battery} mV</p>
-							)}
-						</div>
-					</Tooltip>
+		{typeof status.battery === 'string' && <div style={{ ...divStatusStyle, display: 'flex', alignItems: 'center' }}>
+			<Tooltip title={context.getTranslation('batteryTooltip')}>
+				<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+					<BatteryFullIcon />
+					{status.battery.includes('V') || status.battery.includes('mV') ? (
+						<p style={{ fontSize: 'small', margin: 0 }}>{status.battery} V</p>
+					) : (
+						<p style={{ fontSize: 'small', margin: 0 }}>{status.battery} mV</p>
+					)}
 				</div>
-			)}
+			</Tooltip>
+		</div>}
 
-			{typeof status.battery === 'boolean' && (
-				<div style={{ ...divStatusStyle, display: 'flex', alignItems: 'center' }}>
-					<Tooltip title={context.getTranslation('batteryTooltip')}>
-						<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-							{status.battery ? (
-								<BatteryFullIcon style={iconStyleOK} />
-							) : (
-								<BatteryAlertIcon style={iconStyleNotOK} />
-							)}
-						</div>
-					</Tooltip>
+		{typeof status.battery === 'boolean' && <div style={{ ...divStatusStyle, display: 'flex', alignItems: 'center' }}>
+			<Tooltip title={context.getTranslation('batteryTooltip')}>
+				<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+					{status.battery ? (
+						<BatteryFullIcon style={iconStyleOK} />
+					) : (
+						<BatteryAlertIcon style={iconStyleNotOK} />
+					)}
 				</div>
-			)}
+			</Tooltip>
+		</div>}
 
-			{status.warning && (
-				<div style={{ ...divStatusStyle, display: 'flex', alignItems: 'center' }}>
-					<Tooltip title={status.warning}>
-						<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-							<WarningIcon style={iconStyleWarning} />
-						</div>
-					</Tooltip>
+		{status.warning && <div style={{ ...divStatusStyle, display: 'flex', alignItems: 'center' }}>
+			<Tooltip title={status.warning}>
+				<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+					<WarningIcon style={iconStyleWarning} />
 				</div>
-			)}
-		</div>
-	);
+			</Tooltip>
+		</div>}
+	</div>;
 }

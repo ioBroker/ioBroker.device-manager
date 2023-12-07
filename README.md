@@ -14,7 +14,7 @@
 
 Manage devices of all your adapters (if supported) in one place.
 
-### NOTE: This is adapter is still work in progress. You are welcome to test it and i would be happy about feedback.
+### NOTE: This adapter is still a work in progress. You are welcome to test it and i would be happy about feedback.
 
 ### [Developer manual](https://github.com/Jey-Cee/dm-utils/blob/main/README.md)
 
