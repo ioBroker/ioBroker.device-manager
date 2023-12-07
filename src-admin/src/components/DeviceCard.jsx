@@ -230,6 +230,8 @@ export default function DeviceCard(params) {
                         manufacturer={device.manufacturer}
                         model={device.model}
                         onImageSelect={handleImageClick}
+                        adapterName={context.adapterName}
+                        instance={context.instance}
                     />
                     <img src={icon} alt="placeholder" style={imgStyle} />
                 </div>

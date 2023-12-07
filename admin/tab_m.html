@@ -2,22 +2,11 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-      <script>
-          var script = document.createElement('script');
-          window.registerSocketOnLoad = function (cb) {
-              window.socketLoadedHandler = cb;
-          };
-          script.onload = function () { typeof window.socketLoadedHandler === 'function' && window.socketLoadedHandler(); };
-          setTimeout(() => {
-              script.src = window.location.port.startsWith('300') ? `${window.location.protocol}//${window.location.hostname}:8082/lib/js/socket.io.js` : '%PUBLIC_URL%/../../lib/js/socket.io.js';
-          }, 1000);
-
-          document.head.appendChild(script);
-      </script>
-      <link href="./lib/fontawesome/css/fontawesome.min.css" rel="stylesheet">
+      <script src="../../lib/js/socket.io.js"></script>
+      <!--link href="./lib/fontawesome/css/fontawesome.min.css" rel="stylesheet">
       <link href="./lib/fontawesome/css/brands.min.css" rel="stylesheet">
       <link href="./lib/fontawesome/css/solid.min.css" rel="stylesheet">
-      <link href="./lib/fontawesome/css/v5-font-face.min.css" rel="stylesheet">
+      <link href="./lib/fontawesome/css/v5-font-face.min.css" rel="stylesheet"-->
 
       <style>
           body {
@@ -26,7 +15,7 @@
           }
       </style>
       <title>Device manager</title>
-    <script type="module" crossorigin src="./assets/app-_nYz1wNg.js"></script>
+    <script type="module" crossorigin src="./assets/app-kYcCrPa6.js"></script>
   </head>
   <body>
     <div id="root"></div>

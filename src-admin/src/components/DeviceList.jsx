@@ -92,11 +92,9 @@ export default function DeviceList(params) {
 
     console.log(devices);
     if (devices.length === 0 && selectedInstance !== '') {
-        return (
-            <div style={emptyStyle}>
-                <span>{context.getTranslation('noDevicesFoundText')}</span>
-            </div>
-        );
+        return <div style={emptyStyle}>
+            <span>{context.getTranslation('noDevicesFoundText')}</span>
+        </div>;
     }
     return Object.entries(devices).map(([key, device]) => (
         <DeviceCard

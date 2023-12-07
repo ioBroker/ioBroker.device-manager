@@ -49,6 +49,10 @@ function DeviceImageUpload(params) {
                         fileName: `${fileName}.webp`,
                         fileData: resizedImage,
                     });
+                    const base64Data = resizedImage.replace(/^data:image\/webp;base64,/, '');
+                    const imageBuffer = Buffer.from(base64Data, 'base64');
+                    const response = await context.socket.writeFileAsync(this.namespace, fileName, imageBuffer);
+                    this.log.info(`saveImage response: ${JSON.stringify(response)}`);
 
                     if (onImageSelect) {
                         onImageSelect(resizedImage);
