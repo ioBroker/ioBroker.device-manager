@@ -1,0 +1,18 @@
+{
+	"device-manager adapter settings": "Adaptereinstellungen für device-manager",
+	"manufacturer": "Hersteller",
+	"model": "Modell",
+	"batteryTooltip": "Batterie",
+	"connectedIconTooltip": "Verbunden",
+	"disconnectedIconTooltip": "Getrennt",
+	"cancelButtonText": "Abbrechen",
+	"okButtonText": "OK",
+	"yesButtonText": "Ja",
+	"noButtonText": "Nein",
+	"noInstanceSelectedText": "Bitte Instanz auswählen",
+	"filterLabelText": "Nach Name filtern",
+	"instanceLabelText": "Instanz",
+	"refreshInstanceList": "Instanz Liste aktualisieren",
+	"copied": " ",
+	"toClipboard": " in die Zwischenablage kopiert"
+}
