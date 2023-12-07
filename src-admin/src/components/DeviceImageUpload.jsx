@@ -1,10 +1,7 @@
-import { useState } from 'react';
-
 function DeviceImageUpload(params) {
     const {
         context, manufacturer, model, deviceId, onImageSelect,
     } = params;
-    const [selectedImage, setSelectedImage] = useState(null);
 
     const handleImageUpload = async event => {
         const file = event.target.files[0];
@@ -39,24 +36,14 @@ function DeviceImageUpload(params) {
                     ctx.drawImage(img, 0, 0, width, height);
 
                     const resizedImage = canvas.toDataURL('image/webp');
-                    setSelectedImage(resizedImage);
 
-                    const dmInstance = context.instanceId.replace('system.adapter.', '');
-
-                    // Build the file name from manufacturer and model, if not available use device id
+                    // Build the file name from a manufacturer and model, if not available, use device id
                     const fileName = `${manufacturer ? `${manufacturer}_` : ''}${model || deviceId}`;
-                    context.socket.sendTo(dmInstance, 'saveImage', {
-                        fileName: `${fileName}.webp`,
-                        fileData: resizedImage,
-                    });
                     const base64Data = resizedImage.replace(/^data:image\/webp;base64,/, '');
-                    const imageBuffer = Buffer.from(base64Data, 'base64');
-                    const response = await context.socket.writeFileAsync(this.namespace, fileName, imageBuffer);
-                    this.log.info(`saveImage response: ${JSON.stringify(response)}`);
+                    const response = await context.socket.writeFile64(`${context.adapterName}.${context.instance}`, fileName, base64Data);
+                    console.log(`saveImage response: ${JSON.stringify(response)}`);
 
-                    if (onImageSelect) {
-                        onImageSelect(resizedImage);
-                    }
+                    onImageSelect && onImageSelect(resizedImage);
                 };
             };
 

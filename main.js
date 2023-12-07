@@ -35,19 +35,6 @@ class DeviceManager extends utils.Adapter {
 		this.log.info(`onMessage: ${JSON.stringify(obj)}`);
 		if (typeof obj === 'object') {
 			switch (obj.command) {
-				case 'saveImage': {
-					this.log.info(`saveImage: ${JSON.stringify(obj)}`);
-					// Save image to ioBroker file system
-					const fileName = obj.message.fileName;
-					const fileData = obj.message.fileData;
-					// convert base64 to binary string
-					const base64Data = fileData.replace(/^data:image\/webp;base64,/, '');
-					const imageBuffer = Buffer.from(base64Data, 'base64');
-					const response = await this.writeFileAsync(this.namespace, fileName, imageBuffer);
-					this.log.info(`saveImage response: ${JSON.stringify(response)}`);
-					this.sendTo(obj.from, obj.command, response, obj.callback);
-					break;
-				}
 			}
 		}
 	}
