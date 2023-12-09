@@ -7,9 +7,9 @@ import {
     Select,
 } from '@mui/material';
 
-import TooltipButton from './TooltipButton';
-import FaOrImageIcon from './FaOrImgIcon';
-import {Refresh} from '@mui/icons-material';
+import { Refresh } from '@mui/icons-material';
+
+import TooltipButton from './DeviceManager/TooltipButton.jsx';
 
 /**
  * InstanceList component

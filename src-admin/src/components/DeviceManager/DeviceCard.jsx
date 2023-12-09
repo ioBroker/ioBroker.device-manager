@@ -7,10 +7,10 @@ import {
 
 import { MoreVert as MoreVertIcon } from '@mui/icons-material';
 
-import DeviceActionButton from './DeviceActionButton';
-import DeviceStatus from './DeviceStatus';
-import JsonConfig from './JsonConfig';
-import DeviceImageUpload from './DeviceImageUpload';
+import DeviceActionButton from './DeviceActionButton.jsx';
+import DeviceStatus from './DeviceStatus.jsx';
+import JsonConfig from './JsonConfig.jsx';
+import DeviceImageUpload from './DeviceImageUpload.jsx';
 
 /**
  * Device Card Component

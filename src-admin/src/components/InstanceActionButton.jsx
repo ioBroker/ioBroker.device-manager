@@ -1,5 +1,5 @@
-import TooltipButton from './TooltipButton';
-import { renderIcon } from './Utils.jsx';
+import TooltipButton from './DeviceManager/TooltipButton.jsx';
+import { renderIcon } from './DeviceManager/Utils.jsx';
 
 export default function InstanceActionButton(params) {
     const { action, context } = params;

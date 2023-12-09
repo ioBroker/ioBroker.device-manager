@@ -1,4 +1,4 @@
-import TooltipButton from './TooltipButton';
+import TooltipButton from './TooltipButton.jsx';
 import { renderIcon } from './Utils.jsx';
 
 export default function DeviceActionButton(props) {

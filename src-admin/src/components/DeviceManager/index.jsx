@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import DeviceCard from './DeviceCard';
+import DeviceCard from './DeviceCard.jsx';
 
 /**
  * Device List Component
@@ -88,7 +88,7 @@ export default function DeviceList(params) {
 
     /** @type {object} */
     const emptyStyle = {
-        padding: '25px',
+        padding: 25,
     };
 
     console.log(devices);

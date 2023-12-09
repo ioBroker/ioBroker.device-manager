@@ -17,8 +17,8 @@ import {
 import { I18n } from '@iobroker/adapter-react-v5';
 
 import TopBar from './TopBar';
-import DeviceList from './DeviceList';
-import JsonConfig from './JsonConfig';
+import Index from './DeviceManager/index.jsx';
+import JsonConfig from './DeviceManager/JsonConfig.jsx';
 
 /**
  * Page - Main page
@@ -290,7 +290,7 @@ export default function Page(params) {
                     {selectedInstance === '' && <div style={emptyStyle}>
                         <span>{context.getTranslation('noInstanceSelectedText')}</span>
                     </div>}
-                    <DeviceList
+                    <Index
                         selectedInstance={selectedInstance}
                         filter={filter}
                         context={context}
