@@ -43,15 +43,15 @@ export default function InstanceList(params) {
                     continue;
                 }
 
-                const instanceName = `${res[id].common.name}.${res[id].common.instance}`;
+                const instanceName = id.substring('system.adapter.'.length);
                 try {
                     // Check if the instance is alive by getting the state alive
-                    const alive = await context.socket.getForeignState(`system.adapter.${instanceName}.alive`);
+                    const alive = await context.socket.getState(`system.adapter.${instanceName}.alive`);
                     if (!alive || !alive.val) {
                         continue;
                     }
 
-                    const instance = parseInt(res[id].common.instance) || 0;
+                    const instance = parseInt(instanceName.split('.').pop()) || 0;
                     dmInstances[instanceName] = {
                         title: '',
                         instance,
