@@ -7,14 +7,10 @@ export default function TooltipButton(props) {
     // const IconButton = toggle ? ToggleButton : Button;
     const text = !!label && <Typography variant="button">{label}</Typography>;
     // const Btn = ToggleButton;
-    return disabled ? <IconButton disabled size="large" {...other}>
-        {Icon}
-        <span style={{ marginLeft: 4 }}>{text}</span>
-    </IconButton> :
-        <Tooltip title={tooltip}>
-            <IconButton {...other} size="large">
-                {Icon}
-                <span style={{ marginLeft: 4 }}>{text}</span>
-            </IconButton>
-        </Tooltip>;
+    return <Tooltip title={tooltip}>
+        <IconButton {...other} disabled={disabled} size="small">
+            {Icon}
+            {text ? <span style={{ marginLeft: 4 }}>{text}</span> : null}
+        </IconButton>
+    </Tooltip>;
 }

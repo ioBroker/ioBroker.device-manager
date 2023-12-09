@@ -6,7 +6,7 @@ import JsonConfigComponent from '@iobroker/adapter-react-v5/Components/JsonConfi
 
 export default function JsonConfig(props) {
     const {
-        instanceId, context, schema, data, onChange,
+        instanceId, socket, schema, data, onChange,
     } = props;
     console.log('JsonConfig', props);
     const [error, setError] = useState();
@@ -20,7 +20,7 @@ export default function JsonConfig(props) {
     return <>
         {error && <div>{error}</div>}
         <JsonConfigComponent
-            socket={context.socket}
+            socket={socket}
             adapterName={adapterName}
             instance={parseInt(instance)}
             schema={schema}

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useEffect, useState }  from 'react';
 
 import {
     Backdrop,
@@ -37,21 +37,30 @@ export default function Page(params) {
     * @description '' = no instance selected, string = instance name with instance number
     * @example 'admin.0'
     */
-    const [selectedInstance, setSelectedInstance] = React.useState('');
+    const [selectedInstance, setSelectedInstance] = useState(window.localStorage.getItem('dm.selectedInstance') || '');
+
+    /**
+     * language - Current language
+     * @type {string}
+     * @default 'en'
+     * @example 'de'
+     */
+    const [language, setLanguage] = useState(I18n.getLanguage());
+
     /**
     * filter - Filter for device name, setFilter is called by the top bar
     * @type {string}
     * @default null
     * @description null = no filter, string = filter for device name
     */
-    const [filter, setFilter] = React.useState(null);
+    const [filter, setFilter] = useState(null);
     /**
     * Show spinner
     * @type {boolean}
     * @default false
     * @description true = show spinner, false = hide spinner
     */
-    const [showSpinner, setShowSpinner] = React.useState(false);
+    const [showSpinner, setShowSpinner] = useState(false);
     /**
     * Open dialog
     * @type {string}
@@ -59,7 +68,7 @@ export default function Page(params) {
     * @description undefined = no dialog, 'message' = message dialog, 'confirm' = confirm dialog, 'form' = form dialog, 'progress' = progress dialog
     * @example 'message'
     */
-    const [openDialog, setOpenDialog] = React.useState('');
+    const [openDialog, setOpenDialog] = useState('');
     /**
     * Message dialog
     * @type {{message: string, handleClose: function}}
@@ -67,7 +76,7 @@ export default function Page(params) {
     * @description undefined = no message dialog, {message: string, handleClose: function} = message dialog
     * @example {message: 'Message', handleClose: () => {setOpenDialog(undefined)}}
     */
-    const [message, setMessage] = React.useState();
+    const [message, setMessage] = useState();
     /**
     * Confirm dialog
     * @type {{message: string, handleClose: function}}
@@ -75,7 +84,7 @@ export default function Page(params) {
     * @description undefined = no confirm dialog, {message: string, handleClose: function} = confirm dialog
     * @example {message: 'Confirm', handleClose: (confirm) => {setOpenDialog(undefined)}}
     */
-    const [confirm, setConfirm] = React.useState();
+    const [confirm, setConfirm] = useState();
     /**
     * Form dialog
     * @type {{title: string, schema: object, data: object, handleClose: function}}
@@ -83,7 +92,7 @@ export default function Page(params) {
     * @description undefined = no form dialog, {title: string, schema: object, data: object, handleClose: function} = form dialog
     * @example {title: 'Form', schema: {}, data: {}, handleClose: (data) => {setOpenDialog(undefined)}}
     */
-    const [form, setForm] = React.useState();
+    const [form, setForm] = useState();
     /**
     * Progress dialog
     * @type {{title: string, message: string, progress: object}}
@@ -91,7 +100,7 @@ export default function Page(params) {
     * @description undefined = no progress dialog, {title: string, message: string, progress: object} = progress dialog
     * @example {title: 'Progress', message: 'Progress', progress: {open: true, message: 'Progress', percent: 50}}
     */
-    const [progress, setProgress] = React.useState();
+    const [progress, setProgress] = useState();
     /**
     * Devices
     * @type {object[]}
@@ -99,21 +108,21 @@ export default function Page(params) {
     * @description [] = no devices, object[] = devices
     * @example [{id: 'device.0', name: 'Device', type: 'device', role: 'device', icon: 'device', hasDetails: true, hasActions: true, status: {connection: 'connected', rssi: '-60 dBm', battery: 100}}]
     */
-    const [devices, setDevices] = React.useState([]);
+    const [devices, setDevices] = useState([]);
     /**
     * Loaded
     * @type {boolean}
     * @default false
     * @description true = loaded, false = not loaded
     */
-    const [loaded, setLoaded] = React.useState(false);
+    const [loaded, setLoaded] = useState(false);
     /**
     * Refresh devices
     * @type {boolean}
     * @default false
     * @description true = refresh devices, false = don't refresh devices
     */
-    const [refreshDevices, setRefreshDevices] = React.useState(false);
+    const [refreshDevices, setRefreshDevices] = useState(false);
 
     /**
     * Show toast
@@ -121,14 +130,25 @@ export default function Page(params) {
     * @default undefined
     * @description undefined = don't show toast, string = show toast
     */
-    const [showToast, setShowToast] = React.useState(undefined);
+    const [showToast, setShowToast] = useState(undefined);
 
     /**
     * Get Translation
     * @param {string | object} text - Text to translate
     * @returns {string}
     */
-    context.getTranslation = text => I18n.t(text);
+    context.getTranslation = text => {
+        if (typeof text === 'object') {
+            return text[language] || text.en;
+        }
+        return I18n.t(text);
+    };
+
+    useEffect(() => {
+        window.localStorage.setItem('dm.selectedInstance', selectedInstance);
+    }, [selectedInstance]);
+
+    useEffect(() => setLanguage(I18n.getLanguage()), []);
 
     context.sendActionToInstance = (command, messageToSend, refresh) => {
         const send = async () => {
@@ -324,15 +344,13 @@ export default function Page(params) {
             <Dialog open={openDialog === 'form'} onClose={() => form?.handleClose()} hideBackdrop>
                 <DialogTitle>{context.getTranslation(form?.title)}</DialogTitle>
                 <DialogContent>
-                    {form && (
-                        <JsonConfig
-                            instanceId={selectedInstance}
-                            schema={form.schema}
-                            data={form.data}
-                            socket={context.socket}
-                            onChange={handleFormChange}
-                        />
-                    )}
+                    {form && <JsonConfig
+                        instanceId={selectedInstance}
+                        schema={form.schema}
+                        data={form.data}
+                        socket={context.socket}
+                        onChange={handleFormChange}
+                    />}
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => form?.handleClose()} hideBackdrop>

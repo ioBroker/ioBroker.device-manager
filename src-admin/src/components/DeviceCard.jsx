@@ -36,7 +36,6 @@ export default function DeviceCard(params) {
     // const [uploadedImage, setUploadedImage] = React.useState(null);
 
     const hasDetails = device.hasDetails;
-    const hasActions = device.actions?.length > 0;
     const status = !device.status ? [] : Array.isArray(device.status) ? device.status : [device.status];
 
     useEffect(() => {
@@ -217,9 +216,8 @@ export default function DeviceCard(params) {
         height: '41px',
     };
 
-    return <div style={divStyle}>
+    return <div style={divStyle} key={key}>
         <Paper
-            key={key}
             style={cardStyle}
             onMouseEnter={() => setShadow('0px 8px 12px rgba(0, 0, 0, 0.4)')}
             onMouseLeave={() => setShadow('0px 4px 8px rgba(0, 0, 0, 0.1)')}
@@ -271,7 +269,7 @@ export default function DeviceCard(params) {
                         </span> : null}
                     </div>
                 </Typography>
-                {hasActions && !!device.actions?.length && <div
+                {device.actions?.length && <div
                     style={{
                         flex: '1',
                         position: 'relative',
