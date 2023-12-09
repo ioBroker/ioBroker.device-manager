@@ -9,6 +9,7 @@ import {
 
 import TooltipButton from './TooltipButton';
 import FaOrImageIcon from './FaOrImgIcon';
+import {Refresh} from '@mui/icons-material';
 
 /**
  * InstanceList component
@@ -116,7 +117,7 @@ export default function InstanceList(params) {
         <div>
             <TooltipButton
                 tooltip={context.getTranslation('refreshInstanceList')}
-                Icon={<FaOrImageIcon icon="fa-solid fa-arrows-rotate" />}
+                Icon={<Refresh />}
                 onClick={() => loadInstanceInfos().catch(console.error)}
             />
             <FormControl>

@@ -1,6 +1,5 @@
-// import { ActionContext } from './DeviceList';
-import FaOrImageIcon from './FaOrImgIcon';
 import TooltipButton from './TooltipButton';
+import { renderIcon } from './Utils.jsx';
 
 export default function InstanceActionButton(params) {
     const { action, context } = params;
@@ -8,11 +7,13 @@ export default function InstanceActionButton(params) {
     const tooltip = context.getTranslation(action?.description ? action.description : '');
     const title = context.getTranslation(action?.title ? action.title : '');
 
+    const icon = renderIcon(action);
+
     return <TooltipButton
         tooltip={tooltip}
         label={title}
         disabled={action.disabled}
-        Icon={<FaOrImageIcon icon={action.icon} />}
+        Icon={icon}
         onClick={context.action.instanceHandler(action)}
     />;
 }

@@ -137,8 +137,8 @@ export default function DeviceCard(params) {
     /** @type {CSSProperties} */
     const cardStyle = {
         // backgroundColor: '#fafafa',
-        width: '300px',
-        minHeight: '280px',
+        width: 300,
+        minHeight: 280,
         margin: '10px',
         boxShadow: shadow,
         overflow: 'hidden',
@@ -148,7 +148,7 @@ export default function DeviceCard(params) {
         display: 'flex',
         position: 'relative',
         justifyContent: 'space-between',
-        minHeight: '60px',
+        minHeight: 60,
         color: '#000',
         padding: '0 10px 0 10px',
         backgroundColor: '#77c7ff8c',
@@ -156,8 +156,8 @@ export default function DeviceCard(params) {
     };
     /** @type {CSSProperties} */
     const imgAreaStyle = {
-        height: '45px',
-        width: '45px',
+        height: 45,
+        width: 45,
         margin: 'auto',
         justifyContent: 'center',
         display: 'grid',
@@ -172,29 +172,26 @@ export default function DeviceCard(params) {
     const titleStyle = {
         color: '#333',
         width: '100%',
-        fontSize: '16px',
+        fontSize: 16,
         fontWeight: 'bold',
-        paddingTop: '16px',
-        paddingLeft: '8px',
+        paddingTop: 16,
+        paddingLeft: 8,
         whiteSpace: 'nowrap',
         overflow: 'hidden',
         textOverflow: 'ellipsis',
     };
     /** @type {CSSProperties} */
     const detailsButtonStyle = {
-        right: '20px',
-        width: '40px',
-        minWidth: '40px',
-        bottom: '-20px',
-        height: '40px',
+        right: 20,
+        width: 40,
+        minWidth: 40,
+        bottom: -20,
+        height: 40,
         position: 'absolute',
         padding: 0,
-        fill: 'currentСolor',
         border: 'none',
         borderRadius: '50%',
         color: '#fff',
-        display: 'block',
-        marginTop: '10px',
         transition: 'fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
         fontSize: '1.5rem',
         flexShrink: 0,
@@ -203,17 +200,18 @@ export default function DeviceCard(params) {
     };
     /** @type {CSSProperties} */
     const bodyStyle = {
-        height: 'Calc(100% - 116px)',
+        height: 'calc(100% - 116px)',
+        padding: '0 10px 10px 10px',
     };
     /** @type {CSSProperties} */
     const deviceInfoStyle = {
         padding: '20px 10px 10px 10px',
-        height: '100px',
+        height: 116,
     };
     /** @type {CSSProperties} */
     const statusStyle = {
         padding: '15px 15px 0 15px',
-        height: '41px',
+        height: 41,
     };
 
     return <div style={divStyle} key={key}>
@@ -271,13 +269,13 @@ export default function DeviceCard(params) {
                 </Typography>
                 {device.actions?.length && <div
                     style={{
-                        flex: '1',
+                        flex: 1,
                         position: 'relative',
                         display: 'grid',
                         gridTemplateColumns: 'repeat(5, 60px)',
                         gridTemplateRows: 'auto',
-                        paddingBottom: '5px',
-                        height: '60px',
+                        paddingBottom: 5,
+                        height: 48,
                     }}
                 >
                     {device.actions.map(a => <DeviceActionButton
