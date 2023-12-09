@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
-import { Paper, Button, Typography, Dialog, DialogActions, DialogContent } from '@mui/material';
+import {
+    Paper, Button, Typography,
+    Dialog, DialogActions, DialogContent,
+} from '@mui/material';
 
 import { MoreVert as MoreVertIcon } from '@mui/icons-material';
 

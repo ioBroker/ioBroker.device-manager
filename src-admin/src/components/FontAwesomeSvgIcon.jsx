@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 import { SvgIcon } from '@mui/material';
 
 const FontAwesomeSvgIcon = React.forwardRef((props, ref) => {

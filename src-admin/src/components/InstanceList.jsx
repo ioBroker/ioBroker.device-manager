@@ -1,8 +1,12 @@
 import * as React from 'react';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
+
+import {
+    InputLabel,
+    MenuItem,
+    FormControl,
+    Select,
+} from '@mui/material';
+
 import TooltipButton from './TooltipButton';
 import FaOrImageIcon from './FaOrImgIcon';
 

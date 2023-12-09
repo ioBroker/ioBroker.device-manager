@@ -1,14 +1,19 @@
-import {useState, useEffect, useCallback} from 'react';
 import {
-    KeyboardArrowDown as KeyboardArrowDownIcon,
-    KeyboardArrowUp as KeyboardArrowUpIcon,
-} from '@mui/icons-material';
+    useState, useEffect, useCallback,
+} from 'react';
+
 import {
     ButtonGroup,
     IconButton,
     TableCell,
     TableRow,
 } from '@mui/material';
+
+import {
+    KeyboardArrowDown as KeyboardArrowDownIcon,
+    KeyboardArrowUp as KeyboardArrowUpIcon,
+} from '@mui/icons-material';
+
 // import { DeviceDetails, JsonFormData } from '@jey-cee/dm-utils';
 // import { DeviceInfo } from '@jey-cee/dm-utils/build/types/api';
 import DeviceActionButton from './DeviceActionButton';

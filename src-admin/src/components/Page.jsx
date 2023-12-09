@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 import {
     Backdrop,
     Button,
@@ -127,9 +128,7 @@ export default function Page(params) {
     * @param {string | object} text - Text to translate
     * @returns {string}
     */
-    context.getTranslation = text => {
-        return I18n.t(text);
-    };
+    context.getTranslation = text => I18n.t(text);
 
     context.sendActionToInstance = (command, messageToSend, refresh) => {
         const send = async () => {
@@ -141,7 +140,7 @@ export default function Page(params) {
             console.log(`Response: ${response.type}`);
             switch (type) {
                 case 'message':
-                    console.log(`Message empfangen: ${response.message}`);
+                    console.log(`Message received: ${response.message}`);
                     setMessage({
                         message: response.message,
                         handleClose: () => {
@@ -152,7 +151,7 @@ export default function Page(params) {
                     setOpenDialog('message');
                     break;
                 case 'confirm':
-                    console.log(`Confirm empfangen: ${response.confirm}`);
+                    console.log(`Confirm received: ${response.confirm}`);
                     setConfirm({
                         message: response.confirm,
                         handleClose: confirmation => {
@@ -167,7 +166,7 @@ export default function Page(params) {
                     break;
 
                 case 'form':
-                    console.log('Form empfangen');
+                    console.log('Form received');
                     setForm({
                         ...response.form,
                         handleClose: data => {
