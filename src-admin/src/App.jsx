@@ -62,8 +62,9 @@ class App extends GenericApp {
         }
         /** @type {object} */
         const appStyle = {
-            overflow: 'auto',
-            minHeight: '100vh',
+            overflow: 'hidden',
+            width: '100%',
+            height: '100%',
         };
 
         return <div className="App" style={appStyle}>

@@ -276,16 +276,22 @@ export default function Page(params) {
 
     // TODO: Show toast while action cannot be executed because of broken session or reload page
 
-    return <div className="App-header">
-        <div className="App-header">
-            <Paper elevation={1}>
-                <TopBar
-                    selectedInstance={selectedInstance}
-                    setSelectedInstance={setSelectedInstance}
-                    filter={filter}
-                    setFilter={setFilter}
-                    context={context}
-                />
+    return <div className="App-header" style={{ width: '100%', height: '100%', overflow: 'hidden' }}>
+        <Snackbar
+            open={!!showToast}
+            autoHideDuration={6000}
+            onClose={() => setShowToast(undefined)}
+            message={showToast}
+        />
+        <Paper elevation={1} style={{ width: '100%', height: '100%', overflow: 'hidden' }}>
+            <TopBar
+                selectedInstance={selectedInstance}
+                setSelectedInstance={setSelectedInstance}
+                filter={filter}
+                setFilter={setFilter}
+                context={context}
+            />
+            <div style={{ width: '100%', height: 'calc(100% - 58px)', overflow: 'auto' }}>
                 <Grid container style={gridStyle}>
                     {selectedInstance === '' && <div style={emptyStyle}>
                         <span>{context.getTranslation('noInstanceSelectedText')}</span>
@@ -302,71 +308,65 @@ export default function Page(params) {
                         setRefresh={setRefreshDevices}
                     />
                 </Grid>
-            </Paper>
-            <Backdrop style={backdropStyle} open={showSpinner}>
-                {!openDialog && <CircularProgress></CircularProgress>}
-            </Backdrop>
-            <Dialog
-                open={openDialog === 'message'}
-                onClose={() => message?.handleClose()}
-                hideBackdrop
-                aria-describedby="message-dialog-description"
-            >
-                <DialogContent>
-                    <DialogContentText id="message-dialog-description">{message?.message}</DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => message?.handleClose()} autoFocus hideBackdrop>
-                        OK
-                    </Button>
-                </DialogActions>
-            </Dialog>
-            <Dialog
-                open={openDialog === 'confirm'}
-                onClose={() => confirm?.handleClose()}
-                hideBackdrop
-                aria-describedby="confirm-dialog-description"
-            >
-                <DialogContent>
-                    <DialogContentText id="confirm-dialog-description">
-                        {context.getTranslation(confirm?.message)}
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => confirm?.handleClose(false)} autoFocus hideBackdrop>
-                        {context.getTranslation('noButtonText')}
-                    </Button>
-                    <Button onClick={() => confirm?.handleClose(true)} autoFocus hideBackdrop>
-                        {context.getTranslation('yesButtonText')}
-                    </Button>
-                </DialogActions>
-            </Dialog>
-            <Dialog open={openDialog === 'form'} onClose={() => form?.handleClose()} hideBackdrop>
-                <DialogTitle>{context.getTranslation(form?.title)}</DialogTitle>
-                <DialogContent>
-                    {form && <JsonConfig
-                        instanceId={selectedInstance}
-                        schema={form.schema}
-                        data={form.data}
-                        socket={context.socket}
-                        onChange={handleFormChange}
-                    />}
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => form?.handleClose()} hideBackdrop>
-                        {context.getTranslation('cancelButtonText')}
-                    </Button>
-                    <Button onClick={() => form?.handleClose(form?.data)} autoFocus hideBackdrop>
-                        {context.getTranslation('okButtonText')}
-                    </Button>
-                </DialogActions>
-            </Dialog>
-        </div>
-        <Snackbar
-            open={!!showToast}
-            autoHideDuration={6000}
-            onClose={() => setShowToast(undefined)}
-            message={showToast}
-        />
+            </div>
+        </Paper>
+        <Backdrop style={backdropStyle} open={showSpinner}>
+            {!openDialog && <CircularProgress></CircularProgress>}
+        </Backdrop>
+        <Dialog
+            open={openDialog === 'message'}
+            onClose={() => message?.handleClose()}
+            hideBackdrop
+            aria-describedby="message-dialog-description"
+        >
+            <DialogContent>
+                <DialogContentText id="message-dialog-description">{message?.message}</DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={() => message?.handleClose()} autoFocus hideBackdrop>
+                    OK
+                </Button>
+            </DialogActions>
+        </Dialog>
+        <Dialog
+            open={openDialog === 'confirm'}
+            onClose={() => confirm?.handleClose()}
+            hideBackdrop
+            aria-describedby="confirm-dialog-description"
+        >
+            <DialogContent>
+                <DialogContentText id="confirm-dialog-description">
+                    {context.getTranslation(confirm?.message)}
+                </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={() => confirm?.handleClose(false)} autoFocus hideBackdrop>
+                    {context.getTranslation('noButtonText')}
+                </Button>
+                <Button onClick={() => confirm?.handleClose(true)} autoFocus hideBackdrop>
+                    {context.getTranslation('yesButtonText')}
+                </Button>
+            </DialogActions>
+        </Dialog>
+        <Dialog open={openDialog === 'form'} onClose={() => form?.handleClose()} hideBackdrop>
+            <DialogTitle>{context.getTranslation(form?.title)}</DialogTitle>
+            <DialogContent>
+                {form && <JsonConfig
+                    instanceId={selectedInstance}
+                    schema={form.schema}
+                    data={form.data}
+                    socket={context.socket}
+                    onChange={handleFormChange}
+                />}
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={() => form?.handleClose()} hideBackdrop>
+                    {context.getTranslation('cancelButtonText')}
+                </Button>
+                <Button onClick={() => form?.handleClose(form?.data)} autoFocus hideBackdrop>
+                    {context.getTranslation('okButtonText')}
+                </Button>
+            </DialogActions>
+        </Dialog>
     </div>;
 }

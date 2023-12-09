@@ -14,15 +14,15 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "@iobroker/adapter-react-v5": "^4.7.11",
-    "@types/react": "^18.2.37",
-    "@types/react-dom": "^18.2.15",
-    "@vitejs/plugin-react": "^4.2.0",
-    "eslint": "^8.53.0",
+    "@types/react": "^18.2.42",
+    "@types/react-dom": "^18.2.17",
+    "@vitejs/plugin-react": "^4.2.1",
+    "eslint": "^8.55.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-plugin-eqeqeq-fix": "^1.0.3",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.4.4",
-    "vite": "^5.0.0"
+    "eslint-plugin-react-refresh": "^0.4.5",
+    "vite": "^5.0.7"
   }
 }
