@@ -11,17 +11,18 @@
 ![Test and Release](https://github.com/Jey-Cee/ioBroker.device-manager/workflows/Test%20and%20Release/badge.svg)
 
 ## Device Manager adapter for ioBroker
-
 Manage devices of all your adapters (if supported) in one place.
 
-### NOTE: This is adapter is still work in progress. You are welcome to test it and i would be happy about feedback.
+***NOTE: This adapter is still a work in progress. You are welcome to test it and I would be happy about feedback.***
 
 ### [Developer manual](https://github.com/Jey-Cee/dm-utils/blob/main/README.md)
 
-# Supported adapters
+## Supported adapters
 - Net Tools v1.0.0 [available on npm](https://www.npmjs.com/package/iobroker.net-tools/v/1.0.0)
 - EnOcean v0.9.2 [available on npm]()
 - WLED [available on GitHub](https://github.com/DrozmotiX/ioBroker.wled)
+- HomeKit Controller [available on GitHub](https://github.com/Apollon77/ioBroker.homekit-controller)
+- Matter [available on GitHub](https://github.com/ioBroker/ioBroker.matter)
 
 ---
 ## Changelog
