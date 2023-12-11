@@ -13,20 +13,31 @@ import {
     BatteryFull as BatteryFullIcon,
     BatteryAlert as BatteryAlertIcon,
     Warning as WarningIcon,
+    BatteryCharging50 as BatteryCharging50Icon,
 } from '@mui/icons-material';
+
+import { getTranslation } from './Utils.jsx';
 
 /**
  * Device Status component
  * @param {object} params - Parameters
  * @param {object} params.status - Status object, e.g. { connection: 'connected', battery: 100, rssi: -50 }
- * @param {object} params.context - Context object
  * @returns {React.JSX.Element|null}
  * @constructor
  */
 export default function DeviceStatus(params) {
-    const { status, context } = params;
-    if (!status) {
+    if (!params.status) {
         return null;
+    }
+
+    let status;
+
+    if (typeof params.status === 'string') {
+        status = {
+            connection: params.status,
+        };
+    } else {
+        status = params.status;
     }
 
     /** @type {object} */
@@ -71,7 +82,7 @@ export default function DeviceStatus(params) {
 
     return <div style={{ display: 'flex', alignItems: 'center' }}>
         {status.connection === 'connected' && <div style={{ ...divStatusStyle, display: 'flex', alignItems: 'center' }}>
-            <Tooltip title={context.getTranslation('connectedIconTooltip')}>
+            <Tooltip title={getTranslation('connectedIconTooltip')}>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <LinkIcon style={iconStyleOK} />
                 </div>
@@ -79,7 +90,7 @@ export default function DeviceStatus(params) {
         </div>}
 
         {status.connection === 'disconnected' && <div style={{ ...divStatusStyle, display: 'flex', alignItems: 'center' }}>
-            <Tooltip title={context.getTranslation('disconnectedIconTooltip')}>
+            <Tooltip title={getTranslation('disconnectedIconTooltip')}>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <LinkOffIcon style={iconStyleNotOK} />
                 </div>
@@ -96,7 +107,7 @@ export default function DeviceStatus(params) {
         </div>}
 
         {typeof status.battery === 'number' && <div style={{ ...divStatusStyle, display: 'flex', alignItems: 'center' }}>
-            <Tooltip title={context.getTranslation('batteryTooltip')}>
+            <Tooltip title={getTranslation('batteryTooltip')}>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     {batteryIconTooltip}
                     <p style={{ fontSize: 'small', margin: 0 }}>{status.battery}%</p>
@@ -105,36 +116,35 @@ export default function DeviceStatus(params) {
         </div>}
 
         {typeof status.battery === 'string' && <div style={{ ...divStatusStyle, display: 'flex', alignItems: 'center' }}>
-            <Tooltip title={context.getTranslation('batteryTooltip')}>
+            <Tooltip title={getTranslation('batteryTooltip')}>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <BatteryFullIcon />
-                    {status.battery.includes('V') || status.battery.includes('mV') ? (
-                        <p style={{ fontSize: 'small', margin: 0 }}>{status.battery} V</p>
-                    ) : (
-                        <p style={{ fontSize: 'small', margin: 0 }}>{status.battery} mV</p>
-                    )}
+                    {status.battery === 'charging' ? <BatteryCharging50Icon /> : <BatteryFullIcon />}
+                    {status.battery !== 'charging' ? (status.battery.includes('V') || status.battery.includes('mV') ?
+                        <p style={{ fontSize: 'small', margin: 0 }}>{status.battery}</p> :
+                        <p style={{ fontSize: 'small', margin: 0 }}>{status.battery} mV</p>) : null}
                 </div>
             </Tooltip>
         </div>}
 
         {typeof status.battery === 'boolean' && <div style={{ ...divStatusStyle, display: 'flex', alignItems: 'center' }}>
-            <Tooltip title={context.getTranslation('batteryTooltip')}>
+            <Tooltip title={getTranslation('batteryTooltip')}>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    {status.battery ? (
-                        <BatteryFullIcon style={iconStyleOK} />
-                    ) : (
-                        <BatteryAlertIcon style={iconStyleNotOK} />
-                    )}
+                    {status.battery ? <BatteryFullIcon style={iconStyleOK} /> :
+                        <BatteryAlertIcon style={iconStyleNotOK} />}
                 </div>
             </Tooltip>
         </div>}
 
         {status.warning && <div style={{ ...divStatusStyle, display: 'flex', alignItems: 'center' }}>
-            <Tooltip title={status.warning}>
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <WarningIcon style={iconStyleWarning} />
-                </div>
-            </Tooltip>
+            {typeof status.warning === 'string' || typeof status.warning === 'object' ?
+                <Tooltip title={getTranslation(status.warning)}>
+                    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                        <WarningIcon style={iconStyleWarning}/>
+                    </div>
+                </Tooltip> :
+                    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                            <WarningIcon style={iconStyleWarning}/>
+                    </div>}
         </div>}
     </div>;
 }

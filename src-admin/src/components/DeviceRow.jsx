@@ -16,10 +16,10 @@ import {
 
 // import { DeviceDetails, JsonFormData } from '@jey-cee/dm-utils';
 // import { DeviceInfo } from '@jey-cee/dm-utils/build/types/api';
-import DeviceActionButton from './DeviceManager/DeviceActionButton.jsx';
+import DeviceActionButton from './InstanceManager/DeviceActionButton.jsx';
 // import { ActionContext } from './DeviceList';
-import DeviceStatus from './DeviceManager/DeviceStatus.jsx';
-import JsonConfig from './DeviceManager/JsonConfig.jsx';
+import DeviceStatus from './InstanceManager/DeviceStatus.jsx';
+import JsonConfig from './InstanceManager/JsonConfig.jsx';
 
 export default function DeviceRow(props) {
     const {

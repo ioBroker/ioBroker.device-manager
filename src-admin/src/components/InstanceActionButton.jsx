@@ -1,11 +1,11 @@
-import TooltipButton from './DeviceManager/TooltipButton.jsx';
-import { renderIcon } from './DeviceManager/Utils.jsx';
+import TooltipButton from './InstanceManager/TooltipButton.jsx';
+import { renderIcon, getTranslation } from './InstanceManager/Utils.jsx';
 
 export default function InstanceActionButton(params) {
-    const { action, context } = params;
+    const { action, instanceHandler } = params;
 
-    const tooltip = context.getTranslation(action?.description ? action.description : '');
-    const title = context.getTranslation(action?.title ? action.title : '');
+    const tooltip = getTranslation(action?.description ? action.description : '');
+    const title = getTranslation(action?.title ? action.title : '');
 
     const icon = renderIcon(action);
 
@@ -14,6 +14,6 @@ export default function InstanceActionButton(params) {
         label={title}
         disabled={action.disabled}
         Icon={icon}
-        onClick={context.action.instanceHandler(action)}
+        onClick={instanceHandler(action)}
     />;
 }

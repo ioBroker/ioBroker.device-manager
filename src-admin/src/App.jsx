@@ -68,7 +68,10 @@ class App extends GenericApp {
         };
 
         return <div className="App" style={appStyle}>
-            <Page context={this} />
+            <Page
+                socket={this.socket}
+                uploadImagesToInstance={`${this.adapterName}.${this.instance}`}
+            />
             {this.renderError()}
             {this.renderToast()}
         </div>;

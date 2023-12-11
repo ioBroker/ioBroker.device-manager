@@ -9,12 +9,13 @@ import {
 
 import { Refresh } from '@mui/icons-material';
 
-import TooltipButton from './DeviceManager/TooltipButton.jsx';
+import TooltipButton from './InstanceManager/TooltipButton.jsx';
+import { getTranslation } from './InstanceManager/Utils.jsx';
 
 /**
  * InstanceList component
  * @param {object} params - Parameters
- * @param {object} params.context - Context object
+ * @param {object} params.socket - Socket object
  * @param {string} params.selectedInstance - Selected instance
  * @param {function} params.setSelectedInstance - Set selected instance
  * @param {function} params.setAdapterInstance - Set adapter instance
@@ -23,7 +24,7 @@ import TooltipButton from './DeviceManager/TooltipButton.jsx';
  */
 export default function InstanceList(params) {
     const {
-        context, setSelectedInstance, selectedInstance, setAdapterInstance,
+        socket, setSelectedInstance, selectedInstance, setAdapterInstance,
     } = params;
     const [instanceList, setInstanceList] = React.useState({});
 
@@ -34,11 +35,10 @@ export default function InstanceList(params) {
     React.useEffect(() => {
         const loadAdapters = async () => {
             console.log('Waiting for connection');
-            await context.socket.waitForFirstConnection();
+            await socket.waitForFirstConnection();
 
             console.log('Loading adapters...');
-            // const result = await context.socket.sendTo('device-manager.0', 'listInstances');
-            const res = await context.socket.getObjectViewSystem('instance', 'system.adapter.', 'system.adapter.\u9999');
+            const res = await socket.getObjectViewSystem('instance', 'system.adapter.', 'system.adapter.\u9999');
             const dmInstances = {};
             for (const id in res) {
                 if (!res[id]?.common?.messagebox) {
@@ -51,7 +51,7 @@ export default function InstanceList(params) {
                 const instanceName = id.substring('system.adapter.'.length);
                 try {
                     // Check if the instance is alive by getting the state alive
-                    const alive = await context.socket.getState(`system.adapter.${instanceName}.alive`);
+                    const alive = await socket.getState(`system.adapter.${instanceName}.alive`);
                     if (!alive || !alive.val) {
                         continue;
                     }
@@ -70,7 +70,7 @@ export default function InstanceList(params) {
             console.log(`Load Adapters result: ${JSON.stringify(dmInstances)}`);
         };
         loadAdapters().catch(console.error);
-    }, [context.socket]);
+    }, [socket]);
 
     /**
      *     Handle state change
@@ -78,11 +78,13 @@ export default function InstanceList(params) {
      *     @param {string} event.target.value - Selected instance
      *     @returns {void}
      */
-    const handleStateChange = event => setSelectedInstance(event.target.value);
+    const handleStateChange = event => {
+        setSelectedInstance(event.target.value);
+    };
 
     const loadInstanceInfos = async () => {
         console.log(`Loading instance infos for ${selectedInstance}...`);
-        const info = await context.socket.sendTo(selectedInstance, 'dm:instanceInfo');
+        const info = await socket.sendTo(selectedInstance, 'dm:instanceInfo');
         if (!info || typeof info !== 'object' || info.apiVersion !== 'v1') {
             throw new Error(
                 `Message returned from sendTo() doesn't look like one from DeviceManagement, did you accidentally handle the message in your adapter? ${JSON.stringify(
@@ -116,13 +118,13 @@ export default function InstanceList(params) {
     return <div style={instanceListStyle}>
         <div>
             <TooltipButton
-                tooltip={context.getTranslation('refreshInstanceList')}
+                tooltip={getTranslation('refreshInstanceList')}
                 Icon={<Refresh />}
                 onClick={() => loadInstanceInfos().catch(console.error)}
             />
             <FormControl>
                 <InputLabel id="instance-select-label" style={{ top: '10px' }}>
-                    {context.getTranslation('instanceLabelText')}
+                    {getTranslation('instanceLabelText')}
                 </InputLabel>
                 <Select
                     labelId="instance-select-label"

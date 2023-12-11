@@ -12,11 +12,13 @@ import { Clear } from '@mui/icons-material';
 
 import InstanceList from './InstanceList';
 import InstanceActionButton from './InstanceActionButton';
+import { getTranslation } from './InstanceManager/Utils';
 
 /**
  * TopBar component
  * @param {object} params - Parameters
- * @param {object} params.context - Context object
+ * @param {object} params.socket - Socket Object
+ * @param {object} params.instanceHandler - handler for instance actions
  * @param {string} params.selectedInstance - Selected instance
  * @param {function} params.setSelectedInstance - Set selected instance
  * @param {function} params.setFilter - Set filter
@@ -25,7 +27,8 @@ import InstanceActionButton from './InstanceActionButton';
  */
 export default function TopBar(params) {
     const {
-        context,
+        socket,
+        instanceHandler,
         selectedInstance,
         setSelectedInstance,
         setFilter,
@@ -45,13 +48,9 @@ export default function TopBar(params) {
     const handleFilterChange = value => {
         setLocalFilter(value);
         timeoutId && clearTimeout(timeoutId);
-
         timeoutId = setTimeout(() => {
-            if (!localFilter) {
-                setFilter(null);
-            } else {
-                setFilter(localFilter);
-            }
+            timeoutId = null;
+            setFilter(localFilter);
         }, 250);
     };
 
@@ -68,7 +67,7 @@ export default function TopBar(params) {
         position: 'sticky',
         zIndex: 10,
         top: 0,
-        paddingBottom: '10px',
+        paddingBottom: 10,
     };
     /** @type {object} */
     const gridStyle = {
@@ -82,44 +81,51 @@ export default function TopBar(params) {
     /** @type {object} */
     const divStyle = {
         position: 'relative',
-        left: '10px',
-        top: '5px',
+        left: 10,
+        top: 5,
     };
     /** @type {object} */
     const textFieldStyle = {
         position: 'relative',
-        top: '5px',
+        top: 5,
+        width: 200
     };
 
     return <Paper style={paperStyle}>
         <Grid item container alignItems="center" style={gridStyle}>
             <div style={divStyle}>
-                {actions && adapterInstance.actions.map(a =>
-                    <InstanceActionButton key={a.id} action={a} context={context} />)}
+                {actions?.map(a =>
+                    <InstanceActionButton
+                        key={a.id}
+                        action={a}
+                        instanceHandler={instanceHandler}
+                    />)}
             </div>
             <InstanceList
                 setSelectedInstance={setSelectedInstance}
                 selectedInstance={selectedInstance}
                 setAdapterInstance={setAdapterInstance}
-                context={context}
+                socket={socket}
             />
-            <TextField
-                style={textFieldStyle}
-                variant="standard"
-                label={context.getTranslation('filterLabelText')}
-                onChange={e => handleFilterChange(e.target.value)}
-                value={localFilter}
-                InputProps={{
-                    endAdornment: filter ? <InputAdornment position="end">
-                        <IconButton
-                            onClick={() => handleFilterChange('')}
-                            edge="end"
-                        >
-                            <Clear />
-                        </IconButton>
-                    </InputAdornment> : null,
-                }}
-            />
+            <div style={{ textAlign: 'right' }}>
+                <TextField
+                    style={textFieldStyle}
+                    variant="standard"
+                    label={getTranslation('filterLabelText')}
+                    onChange={e => handleFilterChange(e.target.value)}
+                    value={localFilter}
+                    InputProps={{
+                        endAdornment: localFilter ? <InputAdornment position="end">
+                            <IconButton
+                                onClick={() => handleFilterChange('')}
+                                edge="end"
+                            >
+                                <Clear />
+                            </IconButton>
+                        </InputAdornment> : null,
+                    }}
+                />
+            </div>
         </Grid>
     </Paper>;
 }

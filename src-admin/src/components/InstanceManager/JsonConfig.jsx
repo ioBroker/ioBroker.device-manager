@@ -1,8 +1,5 @@
-// import Connection from "@iobroker/adapter-react-v5/Connection";
 import { useState } from 'react';
 import JsonConfigComponent from '@iobroker/adapter-react-v5/Components/JsonConfigComponent';
-
-// import { JsonFormData, JsonFormSchema } from "@jey-cee/dm-utils";
 
 export default function JsonConfig(props) {
     const {
@@ -27,6 +24,7 @@ export default function JsonConfig(props) {
             data={data}
             onError={setError}
             onChange={_data => onChange(_data)}
+            embedded
         />
     </>;
     /*

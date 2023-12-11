@@ -1,6 +1,6 @@
 function DeviceImageUpload(params) {
     const {
-        context, manufacturer, model, deviceId, onImageSelect,
+        context, manufacturer, model, deviceId, onImageSelect, uploadImagesToInstance,
     } = params;
 
     const handleImageUpload = async event => {
@@ -40,7 +40,7 @@ function DeviceImageUpload(params) {
                     // Build the file name from a manufacturer and model, if not available, use device id
                     const fileName = `${manufacturer ? `${manufacturer}_` : ''}${model || deviceId}`;
                     const base64Data = resizedImage.replace(/^data:image\/webp;base64,/, '');
-                    const response = await context.socket.writeFile64(`${context.adapterName}.${context.instance}`, fileName, base64Data);
+                    const response = await context.socket.writeFile64(uploadImagesToInstance, fileName, base64Data);
                     console.log(`saveImage response: ${JSON.stringify(response)}`);
 
                     onImageSelect && onImageSelect(resizedImage);

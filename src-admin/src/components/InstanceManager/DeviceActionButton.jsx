@@ -1,12 +1,12 @@
 import TooltipButton from './TooltipButton.jsx';
-import { renderIcon } from './Utils.jsx';
+import { renderIcon, getTranslation } from './Utils.jsx';
 
 export default function DeviceActionButton(props) {
     const {
-        deviceId, action, refresh, context, actionContext,
+        deviceId, action, refresh, deviceHandler,
     } = props;
 
-    const tooltip = context.getTranslation(action.description);
+    const tooltip = getTranslation(action.description);
 
     const icon = renderIcon(action);
 
@@ -15,6 +15,6 @@ export default function DeviceActionButton(props) {
         tooltip={tooltip}
         disabled={action.disabled}
         Icon={icon}
-        onClick={actionContext.deviceHandler(deviceId, action, context, refresh)}
+        onClick={deviceHandler(deviceId, action, refresh)}
     />;
 }

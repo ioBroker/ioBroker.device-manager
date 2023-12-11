@@ -2,41 +2,52 @@ import React, { useEffect, useState } from 'react';
 
 import {
     Paper, Button, Typography,
-    Dialog, DialogActions, DialogContent,
+    Dialog, DialogActions, DialogContent, IconButton,
+    Fab, DialogTitle,
 } from '@mui/material';
 
-import { MoreVert as MoreVertIcon } from '@mui/icons-material';
+import {
+    MoreVert as MoreVertIcon,
+    VideogameAsset as ControlIcon,
+    Close as CloseIcon,
+} from '@mui/icons-material';
 
 import DeviceActionButton from './DeviceActionButton.jsx';
+import DeviceControl from './DeviceControl.jsx';
 import DeviceStatus from './DeviceStatus.jsx';
 import JsonConfig from './JsonConfig.jsx';
 import DeviceImageUpload from './DeviceImageUpload.jsx';
+import { getTranslation } from './Utils.jsx';
+import {Icon} from '@iobroker/adapter-react-v5';
 
 /**
  * Device Card Component
  * @param {object} params - Component parameters
  * @param {string} params.title - Title
- * @param {string} params.key - Key
+ * @param {string} params.id - Device ID
  * @param {object} params.device - Device
  * @param {string} params.instanceId - Instance ID
- * @param {object} params.context - Tab App Context
+ * @param {object} params.socket - socket object
  * @param {object} params.actionContext - Action Context
+ * @param {object} params.uploadImagesToInstance - Instance, where the images should be uploaded to
  * @return {Element}
  * @constructor
  */
 export default function DeviceCard(params) {
     const {
-        title, key, device, instanceId, context, actionContext,
+        title, device, instanceId, socket, deviceHandler, uploadImagesToInstance, controlHandler, controlStateHandler,
     } = params;
     const [shadow, setShadow] = React.useState('0px 4px 8px rgba(0, 0, 0, 0.1)');
     const [open, setOpen] = React.useState(false);
     const [details, setDetails] = React.useState();
     const [data, setData] = React.useState({});
     const [icon, setIcon] = useState(device.icon || './no_image.webp');
+    const [showControlDialog, setShowControlDialog] = useState(false);
     // const [uploadedImage, setUploadedImage] = React.useState(null);
 
     const hasDetails = device.hasDetails;
     const status = !device.status ? [] : Array.isArray(device.status) ? device.status : [device.status];
+    const colors = { primary: '#111', secondary: '#888' };
 
     useEffect(() => {
         async function fetchIcon() {
@@ -45,7 +56,7 @@ export default function DeviceCard(params) {
                 const fileName = `${device.manufacturer ? `${device.manufacturer}_` : ''}${
                     device.model ? device.model : device.id
                 }`;
-                const url = `../files/${context.instanceId.replace('system.adapter.', '')}/${fileName}.webp`;
+                const url = `../files/${instanceId.replace('system.adapter.', '')}/${fileName}.webp`;
 
                 try {
                     const response = await fetch(url);
@@ -67,7 +78,7 @@ export default function DeviceCard(params) {
 
         fetchIcon()
             .catch(e => console.error(e));
-    }, [device, context.instanceId]);
+    }, [device, instanceId]);
 
     /**
      * Load the device details
@@ -75,7 +86,7 @@ export default function DeviceCard(params) {
      */
     const loadDetails = async () => {
         console.log(`Loading device details for ${device.id}... from ${instanceId}`);
-        const result = await context.socket.sendTo(instanceId, 'dm:deviceDetails', device.id);
+        const result = await socket.sendTo(instanceId, 'dm:deviceDetails', device.id);
         console.log(`Got device details for ${device.id}:`, result);
         setDetails(result);
     };
@@ -106,11 +117,7 @@ export default function DeviceCard(params) {
      */
     const handleClose = () => setOpen(false);
 
-    const handleImageClick = async imageData => {
-        if (imageData) {
-            setIcon(imageData);
-        }
-    };
+    const handleImageClick = async imageData => imageData && setIcon(imageData);
 
     /**
      * Copy the device ID to the clipboard
@@ -123,7 +130,7 @@ export default function DeviceCard(params) {
             console.log(`Failed to copy ${textToCopy} to clipboard!`);
         } else {
             // alert(`Copied ${textToCopy} to clipboard!`);
-            alert(`${context.getTranslation('copied')} ${textToCopy} ${context.getTranslation('toClipboard')}!`);
+            alert(`${getTranslation('copied')} ${textToCopy} ${getTranslation('toClipboard')}!`);
         }
     };
 
@@ -140,7 +147,6 @@ export default function DeviceCard(params) {
         width: 300,
         minHeight: 280,
         margin: '10px',
-        boxShadow: shadow,
         overflow: 'hidden',
     };
     /** @type {CSSProperties} */
@@ -183,20 +189,24 @@ export default function DeviceCard(params) {
     /** @type {CSSProperties} */
     const detailsButtonStyle = {
         right: 20,
-        width: 40,
-        minWidth: 40,
         bottom: -20,
-        height: 40,
         position: 'absolute',
-        padding: 0,
-        border: 'none',
-        borderRadius: '50%',
-        color: '#fff',
-        transition: 'fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
-        fontSize: '1.5rem',
-        flexShrink: 0,
-        boxShadow:
-            'rgba(0, 0, 0, 0.2) 0px 3px 5px -1px, rgba(0, 0, 0, 0.14) 0px 6px 10px 0px, rgba(0, 0, 0, 0.12) 0px 1px 18px 0px',
+    };
+    /** @type {CSSProperties} */
+    const controlSwitchStyle = {
+        right: 70,
+        bottom: -20,
+        position: 'absolute',
+        backgroundColor: '#444',
+        borderRadius: 50,
+        width: 60,
+        height: 40,
+        paddingTop: 1,
+    };
+    const controlButtonStyle = {
+        right: 65,
+        bottom: -20,
+        position: 'absolute',
     };
     /** @type {CSSProperties} */
     const bodyStyle = {
@@ -214,31 +224,125 @@ export default function DeviceCard(params) {
         height: 41,
     };
 
-    return <div style={divStyle} key={key}>
+    const renderedDialog = open && details ? <Dialog
+        open={!0}
+        maxWidth="md"
+        onClose={handleClose}
+    >
+        <DialogContent>
+            <JsonConfig
+                instanceId={instanceId}
+                socket={socket}
+                schema={details.schema}
+                data={data}
+                onChange={setData}
+            />
+        </DialogContent>
+        <DialogActions>
+            <Button
+                variant="contained"
+                color="primary"
+                onClick={handleClose}
+                autoFocus
+            >
+                {getTranslation('closeButtonText')}
+            </Button>
+        </DialogActions>
+    </Dialog> : null;
+
+    let renderedControls;
+    let controlDialog;
+    let firstControl = device.controls?.[0];
+    if (device.controls?.length === 1 && ((firstControl.type === 'icon' || firstControl.type === 'switch') && !firstControl.label)) {
+        // control can be placed in button icon
+        renderedControls = <div style={firstControl.type === 'switch' ? controlSwitchStyle: controlButtonStyle}>
+            <DeviceControl
+                control={firstControl}
+                colors={colors}
+                socket={socket}
+                deviceId={device.id}
+                controlHandler={controlHandler}
+                controlStateHandler={controlStateHandler}
+            />
+        </div>;
+    } else if (device.controls?.length) {
+        // place button and show controls dialog
+        renderedControls = <Fab size="small" onClick={() => setShowControlDialog(true)} style={controlButtonStyle}>
+            <ControlIcon />
+        </Fab>;
+        if (showControlDialog) {
+            controlDialog = <Dialog
+                open={!0}
+                onClose={() => setShowControlDialog(false)}
+            >
+                <DialogTitle>
+                    {title}
+                    <IconButton
+                        style={{ position: 'absolute', top: 5, right: 5, zIndex: 10 }}
+                        onClick={() => setShowControlDialog(false)}
+                    >
+                        <CloseIcon />
+                    </IconButton>
+                </DialogTitle>
+                <DialogContent>
+                    {device.controls.map(control =>
+                        <DeviceControl key={control.id} control={firstControl} colors={colors} />)}
+                </DialogContent>
+            </Dialog>;
+        }
+    }
+
+    const renderedActions = device.actions?.length ? <div
+        style={{
+            flex: 1,
+            position: 'relative',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(5, 60px)',
+            gridTemplateRows: 'auto',
+            paddingBottom: 5,
+            height: 48,
+        }}
+    >
+        {device.actions.map(a => <DeviceActionButton
+            key={a.id}
+            deviceId={device.id}
+            action={a}
+            deviceHandler={deviceHandler}
+            refresh={refresh}
+        />)}
+    </div> : null;
+
+    return <div style={divStyle}>
         <Paper
             style={cardStyle}
-            onMouseEnter={() => setShadow('0px 8px 12px rgba(0, 0, 0, 0.4)')}
-            onMouseLeave={() => setShadow('0px 4px 8px rgba(0, 0, 0, 0.1)')}
+            sx={{
+                '&:hover': {
+                    boxShadow: '0px 8px 12px rgba(0, 0, 0, 0.4)',
+                },
+            }}
+            // onMouseEnter={() => setShadow('0px 8px 12px rgba(0, 0, 0, 0.4)')}
+            // onMouseLeave={() => setShadow('0px 4px 8px rgba(0, 0, 0, 0.1)')}
         >
             <div style={headerStyle}>
                 <div style={imgAreaStyle}>
-                    <DeviceImageUpload
-                        context={context}
+                    {uploadImagesToInstance ? <DeviceImageUpload
+                        uploadImagesToInstance={uploadImagesToInstance}
                         instanceId={instanceId}
                         deviceId={device.id}
                         manufacturer={device.manufacturer}
                         model={device.model}
                         onImageSelect={handleImageClick}
-                    />
+                    /> : null}
                     <img src={icon} alt="placeholder" style={imgStyle} />
                 </div>
                 <div style={titleStyle}>{title}</div>
-                {hasDetails ? <Button variant="contained" style={detailsButtonStyle} onClick={openModal}>
+                {renderedControls}
+                {hasDetails ? <Fab size="small" style={detailsButtonStyle} onClick={openModal} color="primary">
                     <MoreVertIcon />
-                </Button> : null}
+                </Fab> : null}
             </div>
             <div style={statusStyle}>
-                {status.map((s, i) => <DeviceStatus key={i} status={s} context={context} />)}
+                {status.map((s, i) => <DeviceStatus key={i} status={s} />)}
             </div>
             <div style={bodyStyle}>
                 <Typography variant="body1" style={deviceInfoStyle}>
@@ -251,7 +355,7 @@ export default function DeviceCard(params) {
                     <div>
                         {device.manufacturer ? <span>
                             <b style={{ marginRight: 4 }}>
-                                {context.getTranslation('manufacturer')}
+                                {getTranslation('manufacturer')}
                                 :
                             </b>
                             {device.manufacturer}
@@ -260,55 +364,17 @@ export default function DeviceCard(params) {
                     <div>
                         {device.model ? <span>
                             <b style={{ marginRight: 4 }}>
-                                {context.getTranslation('model')}
+                                {getTranslation('model')}
                                 :
                             </b>
                             {device.model}
                         </span> : null}
                     </div>
                 </Typography>
-                {device.actions?.length && <div
-                    style={{
-                        flex: 1,
-                        position: 'relative',
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(5, 60px)',
-                        gridTemplateRows: 'auto',
-                        paddingBottom: 5,
-                        height: 48,
-                    }}
-                >
-                    {device.actions.map(a => <DeviceActionButton
-                        key={a.id}
-                        deviceId={device.id}
-                        action={a}
-                        actionContext={actionContext}
-                        context={context}
-                        refresh={refresh}
-                    />)}
-                </div>}
+                {renderedActions}
             </div>
         </Paper>
-        <Dialog
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-        >
-            <DialogContent>
-                {details && <JsonConfig
-                    instanceId={instanceId}
-                    socket={context.socket}
-                    schema={details.schema}
-                    data={data}
-                    onChange={setData}
-                />}
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={handleClose} autoFocus>
-                    Close
-                </Button>
-            </DialogActions>
-        </Dialog>
+        {renderedDialog}
+        {controlDialog}
     </div>;
 }
