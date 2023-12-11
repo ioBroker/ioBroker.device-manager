@@ -11,7 +11,7 @@ import {
 import { Clear } from '@mui/icons-material';
 
 import InstanceList from './InstanceList';
-import InstanceActionButton from './InstanceActionButton';
+import InstanceActionButton from './InstanceManager/InstanceActionButton';
 import { getTranslation } from './InstanceManager/Utils';
 
 /**

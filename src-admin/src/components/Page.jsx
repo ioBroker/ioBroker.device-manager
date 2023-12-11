@@ -50,7 +50,7 @@ export default class Page extends Communication {
                     socket={this.props.socket}
                     instanceHandler={this.instanceHandler}
                 />
-                <div style={{ width: '100%', height: 'calc(100% - 58px)', overflow: 'auto' }}>
+                <div style={{ width: '100%', height: 'calc(100% - 66px)', overflow: 'auto', marginTop: 8 }}>
                     <Grid container style={gridStyle}>
                         {!this.state.selectedInstance && <div style={emptyStyle}>
                             <span>{getTranslation('noInstanceSelectedText')}</span>

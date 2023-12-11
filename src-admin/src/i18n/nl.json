@@ -1,7 +1,3 @@
 {
-	"device-manager adapter settings": "Adapterinstellingen voor device-manager",
-	"manufacturer": "Fabrikant",
-	"model": "Model",
-	"batteryTooltip": "Batterij",
-	"connectedIconTooltip": "Verbonden"
+	"device-manager adapter settings": "Adapterinstellingen voor device-manager"
 }

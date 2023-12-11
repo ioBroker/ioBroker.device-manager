@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import {
-    Button, Fab, IconButton,
+    Button, Fab,
     Switch,
 } from '@mui/material';
 import { renderIcon, getTranslation } from './Utils.jsx';
@@ -21,7 +21,6 @@ export default class DeviceControl extends Component {
         this.state = {
             value: props.control.state?.val,
             ts: props.control.state?.ts,
-            ack: props.control.state?.ack,
         };
     }
 
@@ -39,7 +38,6 @@ export default class DeviceControl extends Component {
                 this.setState({
                     value: newState.val,
                     ts: newState.ts,
-                    ack: newState.ack,
                 });
             }
         }
@@ -56,7 +54,6 @@ export default class DeviceControl extends Component {
             return {
                 value: props.control.state.val,
                 ts: props.control.state.ts,
-                ack: props.control.state.ack,
             };
         }
 
@@ -69,7 +66,6 @@ export default class DeviceControl extends Component {
             this.setState({
                 value: result.val,
                 ts: result.ts,
-                ack: result.ack,
             });
         }
     }

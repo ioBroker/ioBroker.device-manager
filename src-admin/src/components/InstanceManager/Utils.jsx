@@ -36,7 +36,7 @@ export function renderIcon(action, colors, value) {
         const iconStyle = action.icon.split(' ').map(s => s.trim()).filter(s => s !== 'fa-solid');
 
         if (iconStyle.includes('fa-trash-can') || iconStyle.includes('fa-trash')) {
-            return <Delete style={{ color }}/>;
+            return <Delete style={{ color }} />;
         }
         if (iconStyle.includes('fa-pen')) {
             return <Edit style={{ color }} />;
@@ -113,7 +113,7 @@ export function renderIcon(action, colors, value) {
         return <Search style={{ color }} />;
     }
     if (action.id === 'unpairDevice') {
-        return <LinkOff  style={{ color }}/>;
+        return <LinkOff style={{ color }} />;
     }
     if (action.id === 'pairDevice') {
         return <LinkIcon style={{ color }} />;
@@ -165,4 +165,4 @@ export function getTranslation(text) {
         return text[language] || text.en;
     }
     return I18n.t(text);
-};
+}

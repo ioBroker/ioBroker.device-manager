@@ -154,6 +154,8 @@ export default class Communication extends Component {
         } else {
             console.warn('Unexpected response type', type);
         }
+
+        return null;
     };
 
     loadDevices() {
@@ -195,12 +197,12 @@ export default class Communication extends Component {
             onClose={() => this.state.confirm.handleClose()}
             hideBackdrop
             aria-describedby="confirm-dialog-description"
-                >
-                <DialogContent>
+        >
+            <DialogContent>
                 <DialogContentText id="confirm-dialog-description">
-                {getTranslation(this.state.confirm.message)}
-        </DialogContentText>
-        </DialogContent>
+                    {getTranslation(this.state.confirm.message)}
+                </DialogContentText>
+            </DialogContent>
             <DialogActions>
                 <Button
                     variant="contained"
@@ -230,7 +232,7 @@ export default class Communication extends Component {
             autoHideDuration={6000}
             onClose={() => this.setState({ showToast: null })}
             message={this.state.showToast}
-        />
+        />;
     }
 
     renderFormDialog() {
@@ -272,7 +274,7 @@ export default class Communication extends Component {
                     {getTranslation('cancelButtonText')}
                 </Button>
             </DialogActions>
-        </Dialog>
+        </Dialog>;
     }
 
     renderProgressDialog() {
@@ -286,7 +288,7 @@ export default class Communication extends Component {
             hideBackdrop
         >
             <LinearProgress variant="determinate" value={this.state.progress?.progress || 0} />
-        </Dialog>
+        </Dialog>;
     }
 
     renderContent() {
@@ -299,8 +301,7 @@ export default class Communication extends Component {
         }
         return <Backdrop style={{ zIndex: 1000 }} open={!0}>
             <CircularProgress />
-        </Backdrop>
-        // return <LinearProgress style={{ position: 'absolute', top: 0, left: 0 }} />;
+        </Backdrop>;
     }
 
     render() {

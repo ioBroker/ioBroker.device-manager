@@ -1,14 +1,28 @@
 import {
-    IconButton, InputAdornment, TextField, AppBar,
+    IconButton, InputAdornment, TextField,
     Toolbar,
 } from '@mui/material';
 
 import { Clear } from '@mui/icons-material';
 
+import { I18n } from '@iobroker/adapter-react-v5';
+
 import DeviceCard from './DeviceCard.jsx';
 import { getTranslation } from './Utils.jsx';
 import Communication from './Communication.jsx';
-import InstanceActionButton from '../InstanceActionButton.jsx';
+import InstanceActionButton from './InstanceActionButton.jsx';
+
+import de from './i18n/de.json';
+import en from './i18n/en.json';
+import ru from './i18n/ru.json';
+import pt from './i18n/pt.json';
+import nl from './i18n/nl.json';
+import fr from './i18n/fr.json';
+import it from './i18n/it.json';
+import es from './i18n/es.json';
+import pl from './i18n/pl.json';
+import uk from './i18n/uk.json';
+import zhCn from './i18n/zh-cn.json';
 
 /**
  * Device List Component
@@ -19,11 +33,31 @@ import InstanceActionButton from '../InstanceActionButton.jsx';
  * @param {string} params.filter - Filter
  * @param {string} params.empbedded - true if this list used with multiple instances and false if only with one
  * @param {string} params.title - Title in appbar (only in non-embedded mode)
+ * @param {string} params.style - Style of devices list
  * @returns {*[]} - Array of device cards
  */
 export default class DeviceList extends Communication {
+    static i18nInitialized = false;
+
     constructor(props) {
         super(props);
+
+        if (!DeviceList.i18nInitialized) {
+            DeviceList.i18nInitialized = true;
+            I18n.extendTranslations({
+                en,
+                de,
+                ru,
+                pt,
+                nl,
+                fr,
+                it,
+                es,
+                pl,
+                uk,
+                'zh-cn': zhCn,
+            });
+        }
 
         this.state.devices = [];
         this.state.filteredDevices = [];
@@ -79,7 +113,7 @@ export default class DeviceList extends Communication {
                 });
             }
         }
-    }
+    };
 
     /**
     * Load devices
@@ -100,7 +134,7 @@ export default class DeviceList extends Communication {
 
         this.setState({ devices, loading: false }, () =>
             this.applyFilter());
-    };
+    }
 
     applyFilter() {
         const filter = this.props.empbedded ? this.props.filter : this.state.filter;
@@ -152,7 +186,7 @@ export default class DeviceList extends Communication {
         } else if (this.state.devices.length && !this.state.filteredDevices.length) {
             list = <div style={emptyStyle}>
                 <span>{getTranslation('allDevicesFilteredOut')}</span>
-            </div>
+            </div>;
         } else {
             list = this.state.filteredDevices.map(device => <DeviceCard
                 key={device.id}
@@ -171,7 +205,7 @@ export default class DeviceList extends Communication {
             return list;
         }
 
-        return <div style={{ width: '100%', height: '100%', overflow: 'hidden'}}>
+        return <div style={{ width: '100%', height: '100%', overflow: 'hidden' }}>
             <Toolbar variant="dense" style={{ backgroundColor: '#777', display: 'flex' }}>
                 {this.props.title}
                 {this.state.alive && this.state.instanceInfo?.actions?.length ? <div
@@ -187,7 +221,7 @@ export default class DeviceList extends Communication {
                         />)}
                 </div> : null}
 
-                <div style={{ flexGrow: 1 }}/>
+                <div style={{ flexGrow: 1 }} />
 
                 {this.state.alive ? <TextField
                     variant="standard"
@@ -196,13 +230,19 @@ export default class DeviceList extends Communication {
                     label={getTranslation('filterLabelText')}
                     onChange={e => this.handleFilterChange(e.target.value)}
                     value={this.state.filter}
+                    autoComplete="off"
+                    inputProps={{
+                        autoComplete: 'new-password',
+                        form: { autoComplete: 'off' },
+                    }}
+                    // eslint-disable-next-line react/jsx-no-duplicate-props
                     InputProps={{
                         endAdornment: this.state.filter ? <InputAdornment position="end">
                             <IconButton
                                 onClick={() => this.handleFilterChange('')}
                                 edge="end"
                             >
-                                <Clear/>
+                                <Clear />
                             </IconButton>
                         </InputAdornment> : null,
                     }}
@@ -211,15 +251,19 @@ export default class DeviceList extends Communication {
             <div
                 style={{
                     width: '100%',
-                    height: 'calc(100% - 48px)',
+                    height: 'calc(100% - 56px)',
+                    marginTop: 8,
                     overflow: 'auto',
                     justifyContent: 'center',
                     alignItems: 'stretch',
                     display: 'grid',
+                    columnGap: 8,
+                    rowGap: 8,
+                    ...this.props.style,
                 }}
             >
                 {list}
             </div>
-        </div>
+        </div>;
     }
 }

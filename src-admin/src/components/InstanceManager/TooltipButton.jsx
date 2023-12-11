@@ -10,7 +10,7 @@ export default function TooltipButton(props) {
     if (tooltip) {
         return <Tooltip title={tooltip}>
             <span>
-                <IconButton {...other} disabled={disabled} size="large">
+                <IconButton {...other} disabled={disabled} size="small">
                     {Icon}
                     {text}
                 </IconButton>
@@ -18,7 +18,7 @@ export default function TooltipButton(props) {
         </Tooltip>;
     }
 
-    return <IconButton {...other} disabled={disabled} size="large">
+    return <IconButton {...other} disabled={disabled} size="small">
         {Icon}
         {text}
     </IconButton>;

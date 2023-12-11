@@ -27,6 +27,7 @@ export default function JsonConfig(props) {
             embedded
         />
     </>;
+
     /*
     JSON adapter config:
             className={classes.scroll}
@@ -76,5 +77,6 @@ export default function JsonConfig(props) {
                 }
                 this.setState({newValues, hasChanges: this.isChanged(newValues)}, () =>
                     this.props.onChange && this.props.onChange(this.state.hasChanges));
-            }}*/
+            }}
+    */
 }

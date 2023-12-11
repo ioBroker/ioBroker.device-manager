@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
 import {
-    Paper, Button, Typography,
+    Button, Typography,
     Dialog, DialogActions, DialogContent, IconButton,
-    Fab, DialogTitle,
+    Fab, DialogTitle, Card, CardActions, CardHeader, CardContent,
 } from '@mui/material';
 
 import {
@@ -12,13 +12,21 @@ import {
     Close as CloseIcon,
 } from '@mui/icons-material';
 
+import { Utils, Icon } from '@iobroker/adapter-react-v5';
+
 import DeviceActionButton from './DeviceActionButton.jsx';
 import DeviceControl from './DeviceControl.jsx';
 import DeviceStatus from './DeviceStatus.jsx';
 import JsonConfig from './JsonConfig.jsx';
 import DeviceImageUpload from './DeviceImageUpload.jsx';
 import { getTranslation } from './Utils.jsx';
-import {Icon} from '@iobroker/adapter-react-v5';
+
+const NoImageIcon = props => <svg viewBox="0 0 24 24" width="24" height="24" style={props.style} className={props.className}>
+    <path
+        fill="currentColor"
+        d="M21.9,21.9l-8.49-8.49l0,0L3.59,3.59l0,0L2.1,2.1L0.69,3.51L3,5.83V19c0,1.1,0.9,2,2,2h13.17l2.31,2.31L21.9,21.9z M5,18 l3.5-4.5l2.5,3.01L12.17,15l3,3H5z M21,18.17L5.83,3H19c1.1,0,2,0.9,2,2V18.17z"
+    />
+</svg>;
 
 /**
  * Device Card Component
@@ -37,11 +45,10 @@ export default function DeviceCard(params) {
     const {
         title, device, instanceId, socket, deviceHandler, uploadImagesToInstance, controlHandler, controlStateHandler,
     } = params;
-    const [shadow, setShadow] = React.useState('0px 4px 8px rgba(0, 0, 0, 0.1)');
     const [open, setOpen] = React.useState(false);
     const [details, setDetails] = React.useState();
     const [data, setData] = React.useState({});
-    const [icon, setIcon] = useState(device.icon || './no_image.webp');
+    const [icon, setIcon] = useState(device.icon);
     const [showControlDialog, setShowControlDialog] = useState(false);
     // const [uploadedImage, setUploadedImage] = React.useState(null);
 
@@ -56,22 +63,23 @@ export default function DeviceCard(params) {
                 const fileName = `${device.manufacturer ? `${device.manufacturer}_` : ''}${
                     device.model ? device.model : device.id
                 }`;
-                const url = `../files/${instanceId.replace('system.adapter.', '')}/${fileName}.webp`;
 
                 try {
-                    const response = await fetch(url);
-                    if (response.ok) {
-                        const blob = await response.blob();
-                        const reader = new FileReader();
-                        reader.onloadend = () => {
-                            setIcon(reader.result);
-                        };
-                        reader.readAsDataURL(blob);
-                    } else {
-                        throw new Error('Response not ok');
-                    }
+                    const file = await socket.readFile(instanceId.replace('system.adapter.', ''), `${fileName}.webp`, true);
+                    setIcon(`data:image/${file.mimeType},${file}`);
+                    // const response = await fetch(url);
+                    // if (response.ok) {
+                    //     const blob = await response.blob();
+                    //     const reader = new FileReader();
+                    //     reader.onloadend = () => {
+                    //         setIcon(reader.result);
+                    //     };
+                    //     reader.readAsDataURL(blob);
+                    // } else {
+                    //     throw new Error('Response not ok');
+                    // }
                 } catch (error) {
-                    setIcon('./no_image.webp');
+                    setIcon('');
                 }
             }
         }
@@ -136,94 +144,6 @@ export default function DeviceCard(params) {
 
     React.useEffect(() => setData(details?.data || {}), [details]);
 
-    // Styles for the device card
-    /** @type {CSSProperties} */
-    const divStyle = {
-        height: '100%',
-    };
-    /** @type {CSSProperties} */
-    const cardStyle = {
-        // backgroundColor: '#fafafa',
-        width: 300,
-        minHeight: 280,
-        margin: '10px',
-        overflow: 'hidden',
-    };
-    /** @type {CSSProperties} */
-    const headerStyle = {
-        display: 'flex',
-        position: 'relative',
-        justifyContent: 'space-between',
-        minHeight: 60,
-        color: '#000',
-        padding: '0 10px 0 10px',
-        backgroundColor: '#77c7ff8c',
-        borderRadius: '4px 4px 0 0',
-    };
-    /** @type {CSSProperties} */
-    const imgAreaStyle = {
-        height: 45,
-        width: 45,
-        margin: 'auto',
-        justifyContent: 'center',
-        display: 'grid',
-    };
-    /** @type {CSSProperties} */
-    const imgStyle = {
-        zIndex: 2,
-        maxWidth: '100%',
-        maxHeight: '100%',
-    };
-    /** @type {CSSProperties} */
-    const titleStyle = {
-        color: '#333',
-        width: '100%',
-        fontSize: 16,
-        fontWeight: 'bold',
-        paddingTop: 16,
-        paddingLeft: 8,
-        whiteSpace: 'nowrap',
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-    };
-    /** @type {CSSProperties} */
-    const detailsButtonStyle = {
-        right: 20,
-        bottom: -20,
-        position: 'absolute',
-    };
-    /** @type {CSSProperties} */
-    const controlSwitchStyle = {
-        right: 70,
-        bottom: -20,
-        position: 'absolute',
-        backgroundColor: '#444',
-        borderRadius: 50,
-        width: 60,
-        height: 40,
-        paddingTop: 1,
-    };
-    const controlButtonStyle = {
-        right: 65,
-        bottom: -20,
-        position: 'absolute',
-    };
-    /** @type {CSSProperties} */
-    const bodyStyle = {
-        height: 'calc(100% - 116px)',
-        padding: '0 10px 10px 10px',
-    };
-    /** @type {CSSProperties} */
-    const deviceInfoStyle = {
-        padding: '20px 10px 10px 10px',
-        height: 116,
-    };
-    /** @type {CSSProperties} */
-    const statusStyle = {
-        padding: '15px 15px 0 15px',
-        height: 41,
-    };
-
     const renderedDialog = open && details ? <Dialog
         open={!0}
         maxWidth="md"
@@ -252,22 +172,23 @@ export default function DeviceCard(params) {
 
     let renderedControls;
     let controlDialog;
-    let firstControl = device.controls?.[0];
+    const firstControl = device.controls?.[0];
     if (device.controls?.length === 1 && ((firstControl.type === 'icon' || firstControl.type === 'switch') && !firstControl.label)) {
         // control can be placed in button icon
-        renderedControls = <div style={firstControl.type === 'switch' ? controlSwitchStyle: controlButtonStyle}>
-            <DeviceControl
-                control={firstControl}
-                colors={colors}
-                socket={socket}
-                deviceId={device.id}
-                controlHandler={controlHandler}
-                controlStateHandler={controlStateHandler}
-            />
-        </div>;
+        renderedControls = <DeviceControl
+            control={firstControl}
+            colors={colors}
+            socket={socket}
+            deviceId={device.id}
+            controlHandler={controlHandler}
+            controlStateHandler={controlStateHandler}
+        />;
     } else if (device.controls?.length) {
         // place button and show controls dialog
-        renderedControls = <Fab size="small" onClick={() => setShowControlDialog(true)} style={controlButtonStyle}>
+        renderedControls = <Fab
+            size="small"
+            onClick={() => setShowControlDialog(true)}
+        >
             <ControlIcon />
         </Fab>;
         if (showControlDialog) {
@@ -278,7 +199,12 @@ export default function DeviceCard(params) {
                 <DialogTitle>
                     {title}
                     <IconButton
-                        style={{ position: 'absolute', top: 5, right: 5, zIndex: 10 }}
+                        style={{
+                            position: 'absolute',
+                            top: 5,
+                            right: 5,
+                            zIndex: 10,
+                        }}
                         onClick={() => setShowControlDialog(false)}
                     >
                         <CloseIcon />
@@ -292,89 +218,93 @@ export default function DeviceCard(params) {
         }
     }
 
-    const renderedActions = device.actions?.length ? <div
-        style={{
-            flex: 1,
-            position: 'relative',
-            display: 'grid',
-            gridTemplateColumns: 'repeat(5, 60px)',
-            gridTemplateRows: 'auto',
-            paddingBottom: 5,
-            height: 48,
+    const renderedActions = device.actions?.length ? device.actions.map(a => <DeviceActionButton
+        key={a.id}
+        deviceId={device.id}
+        action={a}
+        deviceHandler={deviceHandler}
+        refresh={refresh}
+    />) : null;
+
+    return <Card
+        sx={{
+            maxWidth: 345,
+            minWidth: 200,
         }}
     >
-        {device.actions.map(a => <DeviceActionButton
-            key={a.id}
-            deviceId={device.id}
-            action={a}
-            deviceHandler={deviceHandler}
-            refresh={refresh}
-        />)}
-    </div> : null;
-
-    return <div style={divStyle}>
-        <Paper
-            style={cardStyle}
-            sx={{
-                '&:hover': {
-                    boxShadow: '0px 8px 12px rgba(0, 0, 0, 0.4)',
-                },
-            }}
-            // onMouseEnter={() => setShadow('0px 8px 12px rgba(0, 0, 0, 0.4)')}
-            // onMouseLeave={() => setShadow('0px 4px 8px rgba(0, 0, 0, 0.1)')}
-        >
-            <div style={headerStyle}>
-                <div style={imgAreaStyle}>
-                    {uploadImagesToInstance ? <DeviceImageUpload
-                        uploadImagesToInstance={uploadImagesToInstance}
-                        instanceId={instanceId}
-                        deviceId={device.id}
-                        manufacturer={device.manufacturer}
-                        model={device.model}
-                        onImageSelect={handleImageClick}
-                    /> : null}
-                    <img src={icon} alt="placeholder" style={imgStyle} />
-                </div>
-                <div style={titleStyle}>{title}</div>
-                {renderedControls}
-                {hasDetails ? <Fab size="small" style={detailsButtonStyle} onClick={openModal} color="primary">
+        <CardHeader
+            sx={theme => ({
+                backgroundColor: device.color || theme.palette.secondary.main,
+                color: device.color ? Utils.invertColor(device.color, true) : theme.palette.secondary.contrastText,
+            })}
+            avatar={<div>
+                {uploadImagesToInstance ? <DeviceImageUpload
+                    uploadImagesToInstance={uploadImagesToInstance}
+                    instanceId={instanceId}
+                    deviceId={device.id}
+                    manufacturer={device.manufacturer}
+                    model={device.model}
+                    onImageSelect={handleImageClick}
+                /> : null}
+                {icon ? <Icon src={icon} /> : <NoImageIcon />}
+            </div>}
+            action={
+                hasDetails ? <IconButton aria-label="settings" onClick={openModal}>
                     <MoreVertIcon />
-                </Fab> : null}
-            </div>
-            <div style={statusStyle}>
+                </IconButton> : null
+            }
+            title={title}
+            subheader={device.manufacturer ? <span>
+                <b style={{ marginRight: 4 }}>
+                    {getTranslation('manufacturer')}
+                    :
+                </b>
+                {device.manufacturer}
+            </span> : null}
+        />
+        <CardContent style={{ position: 'relative' }}>
+            {status?.length ? <div
+                style={{
+                    display: 'flex',
+                    position: 'absolute',
+                    top: -11,
+                    background: '#88888880',
+                    padding: '0 8px',
+                    borderRadius: 5,
+                    width: 'calc(100% - 46px)',
+                }}
+            >
                 {status.map((s, i) => <DeviceStatus key={i} status={s} />)}
-            </div>
-            <div style={bodyStyle}>
-                <Typography variant="body1" style={deviceInfoStyle}>
-                    <div>
-                        <span onClick={copyToClipboard}>
-                            <b>ID:</b>
-                            <span style={{ marginLeft: 4 }}>{device.id.replace(/.*\.\d\./, '')}</span>
-                        </span>
+            </div> : null}
+            <div>
+                <Typography variant="body1">
+                    <div onClick={copyToClipboard}>
+                        <b>ID:</b>
+                        <span style={{ marginLeft: 4 }}>{device.id.replace(/.*\.\d\./, '')}</span>
                     </div>
-                    <div>
-                        {device.manufacturer ? <span>
-                            <b style={{ marginRight: 4 }}>
-                                {getTranslation('manufacturer')}
-                                :
-                            </b>
-                            {device.manufacturer}
-                        </span> : null}
-                    </div>
-                    <div>
-                        {device.model ? <span>
-                            <b style={{ marginRight: 4 }}>
-                                {getTranslation('model')}
-                                :
-                            </b>
-                            {device.model}
-                        </span> : null}
-                    </div>
+                    {device.manufacturer ? <div>
+                        <b style={{ marginRight: 4 }}>
+                            {getTranslation('manufacturer')}
+                            :
+                        </b>
+                        {device.manufacturer}
+                    </div> : null}
+                    {device.model ? <div>
+                        <b style={{ marginRight: 4 }}>
+                            {getTranslation('model')}
+                            :
+                        </b>
+                        {device.model}
+                    </div> : null}
                 </Typography>
-                {renderedActions}
             </div>
-        </Paper>
+        </CardContent>
+        <CardActions disableSpacing>
+            {renderedActions}
+            <div style={{ flexGrow: 1 }} />
+            {renderedControls}
+        </CardActions>
         {renderedDialog}
         {controlDialog}
-    </div>;
+    </Card>;
 }
