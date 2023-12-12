@@ -9,7 +9,9 @@
         "sourceRoot": "./src",
         "noImplicitAny": false,
         "lib": ["es2018", "DOM"],
-
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "types": ["@iobroker/types"],                           /* Type declaration files to be included in compilation. */
         // Support React - both must be here because parcel v1 does not
         // evaluate the "extends" option
         "jsx": "react",
