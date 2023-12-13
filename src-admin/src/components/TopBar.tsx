@@ -33,7 +33,7 @@ interface TopBarProps {
 interface TopBarState {
     adapterInstance: InstanceDetails | null;
     localFilter: string;
-    alive: false;
+    alive: boolean;
 }
 
 /**
