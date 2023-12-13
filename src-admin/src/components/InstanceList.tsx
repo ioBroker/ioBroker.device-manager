@@ -20,6 +20,7 @@ interface InstanceListProps {
     setSelectedInstance: (instance: string) => void;
     selectedInstance: string;
     setAdapterInstance: any;
+    reportAliveState?: (alive: boolean) => void;
 }
 
 interface InstanceListState {
@@ -44,6 +45,7 @@ interface InstanceListState {
  */
 class InstanceList extends Component<InstanceListProps, InstanceListState> {
     private aliveSubscribes: string[] = [];
+
     private selectedInstance: string;
 
     constructor(props: InstanceListProps) {
@@ -76,7 +78,7 @@ class InstanceList extends Component<InstanceListProps, InstanceListState> {
                 instanceList[instanceName] = {
                     title: '',
                     instance,
-                    disabled: !alive?.val
+                    disabled: !alive?.val,
                 };
             } catch (error) {
                 console.error(error);
@@ -98,7 +100,13 @@ class InstanceList extends Component<InstanceListProps, InstanceListState> {
             }
         }
 
-        this.setState( { instanceList });
+        if (this.props.selectedInstance && (!instanceList[this.props.selectedInstance] || instanceList[this.props.selectedInstance].disabled)) {
+            this.props.reportAliveState && this.props.reportAliveState(false);
+        } else {
+            this.props.reportAliveState && this.props.reportAliveState(true);
+        }
+
+        this.setState({ instanceList });
         console.log(`Load Adapters result: ${JSON.stringify(instanceList)}`);
     };
 
@@ -110,6 +118,9 @@ class InstanceList extends Component<InstanceListProps, InstanceListState> {
                 const instanceList = JSON.parse(JSON.stringify(this.state.instanceList));
                 instanceList[instanceName].disabled = !state?.val;
                 this.setState({ instanceList });
+                if (this.props.selectedInstance === instanceName) {
+                    this.props.reportAliveState && this.props.reportAliveState(!disabled);
+                }
             }
         }
     };
@@ -122,7 +133,6 @@ class InstanceList extends Component<InstanceListProps, InstanceListState> {
 
     componentDidMount() {
         this.loadAdapters().catch(console.error);
-
 
         this.props.socket.subscribeObject('system.adapter.*', this.onInstanceChanged)
             .catch(console.error);
@@ -146,13 +156,12 @@ class InstanceList extends Component<InstanceListProps, InstanceListState> {
             );
         }
         this.props.setAdapterInstance(info);
-    };
+    }
 
     render() {
         if (this.selectedInstance !== this.props.selectedInstance) {
             this.selectedInstance = this.props.selectedInstance;
             setTimeout(() => this.loadInstanceInfos().catch(console.error), 100);
-
         }
         /** @type {object} */
         const instanceListStyle: React.CSSProperties = {
@@ -165,31 +174,31 @@ class InstanceList extends Component<InstanceListProps, InstanceListState> {
         };
 
         return <div style={instanceListStyle}>
-            <div>
-                {/* <TooltipButton
-            tooltip={getTranslation('refreshInstanceList')}
-            Icon={<Refresh />}
-            onClick={() => loadInstanceInfos().catch(console.error)}
-        /> */}
-                <FormControl>
-                    <InputLabel id="instance-select-label" style={{ top: '10px' }}>
-                        {getTranslation('instanceLabelText')}
-                    </InputLabel>
-                    <Select
-                        labelId="instance-select-label"
-                        id="instance-select"
-                        value={this.props.selectedInstance}
-                        onChange={e => this.props.setSelectedInstance(e.target.value)}
-                        displayEmpty
-                        variant="standard"
-                        sx={{ minWidth: 120 }}
-                    >
-                        {Object.keys(this.state.instanceList).map(id => <MenuItem key={id} value={id} disabled={this.state.instanceList[id].disabled}>
-                            {id}
-                        </MenuItem>)}
-                    </Select>
-                </FormControl>
-            </div>
+            <FormControl>
+                <InputLabel id="instance-select-label" style={{ top: '10px' }}>
+                    {getTranslation('instanceLabelText')}
+                </InputLabel>
+                <Select
+                    labelId="instance-select-label"
+                    id="instance-select"
+                    value={this.props.selectedInstance}
+                    onChange={e => this.props.setSelectedInstance(e.target.value)}
+                    displayEmpty
+                    variant="standard"
+                    renderValue={value => {
+                        const instance = this.state.instanceList[value as string];
+                        if (!instance || !instance.disabled) {
+                            return value;
+                        }
+                        return <span style={{ color: 'red' }}>{value}</span>;
+                    }}
+                    sx={{ minWidth: 120 }}
+                >
+                    {Object.keys(this.state.instanceList).map(id => <MenuItem key={id} value={id} disabled={this.state.instanceList[id].disabled}>
+                        {id}
+                    </MenuItem>)}
+                </Select>
+            </FormControl>
         </div>;
     }
 }

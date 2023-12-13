@@ -1,14 +1,16 @@
+import React from 'react';
+
 import {
     Grid,
     Paper,
 } from '@mui/material';
 
+import { getTranslation } from '@iobroker/dm-gui-components/Utils';
+import Communication, { CommunicationProps, CommunicationState } from './InstanceManager/Communication';
+
 import TopBar from './TopBar';
 // import DeviceList from '@iobroker/dm-gui-components';
 import DeviceList from './InstanceManager';
-import { getTranslation } from '@iobroker/dm-gui-components/Utils';
-import Communication, {CommunicationProps, CommunicationState} from './InstanceManager/Communication';
-import React from "react";
 
 interface PageProps extends CommunicationProps {
     /* Instance to upload images to, like `adapterName.X` */
@@ -17,6 +19,8 @@ interface PageProps extends CommunicationProps {
 
  interface PageState extends CommunicationState {
      filter: string;
+     selectedInstance: string;
+     commandHandler: null | ((command: string) => void);
  }
 
 /**
@@ -33,11 +37,8 @@ export default class Page extends Communication<PageProps, PageState> {
         Object.assign(this.state, {
             selectedInstance: window.localStorage.getItem('dm.selectedInstance') || '',
             filter: '',
+            commandHandler: null,
         });
-    }
-
-    loadData(): Promise<void> {
-        return Promise.resolve(undefined);
     }
 
     renderContent() {
@@ -61,12 +62,19 @@ export default class Page extends Communication<PageProps, PageState> {
                         window.localStorage.setItem('dm.selectedInstance', selectedInstance);
                         this.setState({ selectedInstance });
                     }}
-                    filter={this.state.filter}
                     setFilter={filter => this.setState({ filter })}
                     socket={this.props.socket}
                     instanceHandler={this.instanceHandler}
+                    commandHandler={this.state.commandHandler}
                 />
-                <div style={{ width: '100%', height: 'calc(100% - 66px)', overflow: 'auto', marginTop: 8 }}>
+                <div
+                    style={{
+                        width: '100%',
+                        height: 'calc(100% - 66px)',
+                        overflow: 'auto',
+                        marginTop: 8,
+                    }}
+                >
                     <Grid container style={gridStyle}>
                         {!this.state.selectedInstance && <div style={emptyStyle}>
                             <span>{getTranslation('noInstanceSelectedText')}</span>
@@ -77,6 +85,7 @@ export default class Page extends Communication<PageProps, PageState> {
                             selectedInstance={this.state.selectedInstance}
                             filter={this.state.filter}
                             socket={this.props.socket}
+                            registerHandler={handler => this.setState({ commandHandler: handler })}
                         />
                     </Grid>
                 </div>
