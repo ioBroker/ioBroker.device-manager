@@ -17,5 +17,6 @@
   "okButtonText": "OK",
   "refreshInstanceList": "Atualizar lista de instâncias",
   "toClipboard": "para a área de transferência",
-  "yesButtonText": "Sim"
+  "yesButtonText": "Sim",
+  "refreshTooltip": "Recarregar dispositivos"
 }

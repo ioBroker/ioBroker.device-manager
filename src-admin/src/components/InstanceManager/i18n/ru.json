@@ -17,5 +17,6 @@
   "okButtonText": "ХОРОШО",
   "refreshInstanceList": "Обновить список экземпляров",
   "toClipboard": "в буфер обмена",
-  "yesButtonText": "Да"
+  "yesButtonText": "Да",
+  "refreshTooltip": "Перезагрузить устройства"
 }

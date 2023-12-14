@@ -17,5 +17,6 @@
   "okButtonText": "OK",
   "refreshInstanceList": "Odśwież listę instancji",
   "toClipboard": "do schowka",
-  "yesButtonText": "Tak"
+  "yesButtonText": "Tak",
+  "refreshTooltip": "Załaduj ponownie urządzenia"
 }

@@ -6,8 +6,8 @@ import {
 } from '@mui/material';
 
 import { getTranslation } from '@iobroker/dm-gui-components/Utils';
-import DeviceList from '@iobroker/dm-gui-components';
-// import DeviceList from './InstanceManager';
+// import DeviceList from '@iobroker/dm-gui-components';
+import DeviceList from './InstanceManager';
 
 import Communication, { CommunicationProps, CommunicationState } from './InstanceManager/Communication';
 import TopBar from './TopBar';

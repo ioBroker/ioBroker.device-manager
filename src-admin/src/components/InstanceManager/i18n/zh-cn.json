@@ -17,5 +17,6 @@
   "okButtonText": "好的",
   "refreshInstanceList": "刷新实例列表",
   "toClipboard": "到剪贴板",
-  "yesButtonText": "是的"
+  "yesButtonText": "是的",
+  "refreshTooltip": "重新加载设备"
 }

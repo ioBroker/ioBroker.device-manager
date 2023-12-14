@@ -17,5 +17,6 @@
   "okButtonText": "в порядку",
   "refreshInstanceList": "Оновити список екземплярів",
   "toClipboard": "в буфер обміну",
-  "yesButtonText": "Так"
+  "yesButtonText": "Так",
+  "refreshTooltip": "Перезавантажте пристрої"
 }

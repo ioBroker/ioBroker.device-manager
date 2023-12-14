@@ -17,5 +17,6 @@
   "okButtonText": "D'ACCORD",
   "refreshInstanceList": "Actualiser la liste des instances",
   "toClipboard": "au presse-papiers",
-  "yesButtonText": "Oui"
+  "yesButtonText": "Oui",
+  "refreshTooltip": "Recharger les appareils"
 }

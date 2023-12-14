@@ -17,5 +17,6 @@
   "allDevicesFilteredOut": "Alle Geräte herausgefiltert",
   "closeButtonText": "Schließen",
   "instanceNotAlive": "Instanz ist nicht aktiv",
-  "noDevicesFoundText": "Keine Geräte gefunden"
+  "noDevicesFoundText": "Keine Geräte gefunden",
+  "refreshTooltip": "Geräte neu laden"
 }

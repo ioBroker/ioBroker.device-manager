@@ -17,5 +17,6 @@
   "okButtonText": "DE ACUERDO",
   "refreshInstanceList": "Actualizar lista de instancias",
   "toClipboard": "al portapapeles",
-  "yesButtonText": "Sí"
+  "yesButtonText": "Sí",
+  "refreshTooltip": "Recargar dispositivos"
 }

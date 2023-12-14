@@ -17,5 +17,6 @@
   "okButtonText": "OK",
   "refreshInstanceList": "Ververs de exemplaarlijst",
   "toClipboard": "naar klembord",
-  "yesButtonText": "Ja"
+  "yesButtonText": "Ja",
+  "refreshTooltip": "Apparaten opnieuw laden"
 }
