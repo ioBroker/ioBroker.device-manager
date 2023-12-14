@@ -4,7 +4,7 @@ import {
     Switch,
 } from '@mui/material';
 import { renderIcon, getTranslation } from './Utils';
-import {ControlBase, ControlState} from "@iobroker/dm-utils/build/types/base";
+import { ControlBase, ControlState } from '@iobroker/dm-utils/build/types/base';
 
 interface DeviceControlProps {
     deviceId: string;
@@ -13,7 +13,7 @@ interface DeviceControlProps {
     controlHandler: (deviceId: string, control: ControlBase, state: ControlState) => () => Promise<ioBroker.State | null>;
     controlStateHandler: (deviceId: string, control: ControlBase) => () => Promise<ioBroker.State | null>;
     colors: any;
-    disabled: boolean;
+    disabled?: boolean;
 }
 
 interface DeviceControlState {

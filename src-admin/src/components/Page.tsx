@@ -6,11 +6,11 @@ import {
 } from '@mui/material';
 
 import { getTranslation } from '@iobroker/dm-gui-components/Utils';
-import Communication, { CommunicationProps, CommunicationState } from './InstanceManager/Communication';
+import DeviceList from '@iobroker/dm-gui-components';
+// import DeviceList from './InstanceManager';
 
+import Communication, { CommunicationProps, CommunicationState } from './InstanceManager/Communication';
 import TopBar from './TopBar';
-// import DeviceList from '@iobroker/dm-gui-components';
-import DeviceList from './InstanceManager';
 
 interface PageProps extends CommunicationProps {
     /* Instance to upload images to, like `adapterName.X` */

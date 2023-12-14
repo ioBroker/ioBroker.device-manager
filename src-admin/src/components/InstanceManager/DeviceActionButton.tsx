@@ -2,14 +2,14 @@ import React from 'react';
 
 import TooltipButton from './TooltipButton.js';
 import { renderIcon, getTranslation } from './Utils.js';
-import {ActionBase} from "@iobroker/dm-utils/build/types/base";
+import { ActionBase } from '@iobroker/dm-utils/build/types/base';
 
 interface DeviceActionButtonProps {
     deviceId: string;
     action: any;
     refresh: () => void;
     deviceHandler: (deviceId: string, action: ActionBase<'api'>, refresh: () => void) => () => void;
-    disabled: boolean;
+    disabled?: boolean;
 }
 
 export default function DeviceActionButton(props: DeviceActionButtonProps): React.JSX.Element {
