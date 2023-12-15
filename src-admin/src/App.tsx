@@ -75,7 +75,8 @@ class App extends GenericApp {
             height: '100%',
         };
 
-        return <div className="App" style={appStyle}>
+        // className "device-manager-app" used in tests
+        return <div className="App device-manager-app" style={appStyle}>
             <Page
                 selectedInstance=""
                 socket={this.socket}

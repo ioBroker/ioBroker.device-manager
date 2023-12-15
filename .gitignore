@@ -13,3 +13,4 @@ iobroker.*.tgz
 
 Thumbs.db
 src-admin/package-lock.json
+tmp/

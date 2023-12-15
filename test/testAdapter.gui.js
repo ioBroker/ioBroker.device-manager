@@ -10,16 +10,17 @@ describe('test-admin-gui', () => {
 
         // install js-controller, web and vis-2-beta
         await engineHelper.startIoBrokerAdmin();
-        const { page } = await guiHelper.startBrowser(adapterName, rootDir, process.env.CI === 'true');
+        const { page } = await guiHelper.startBrowser(`${adapterName}/tab_m.html`, rootDir, process.env.CI === 'true');
         gPage = page;
     });
 
     it('Check admin server', async function (){
         this.timeout(15_000);
         return new Promise(resolve => setTimeout(async () => {
-            await gPage.waitForSelector('.MuiTabs-root', { timeout: 15_000 });
+            await gPage.waitForSelector('.App', { timeout: 15_000 });
+            await guiHelper.screenshot(rootDir, null, '01_started');
             resolve();
-        }, 5000));
+        }, 1000));
     });
 
     after(async function () {
