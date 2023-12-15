@@ -63,6 +63,7 @@
   ],
   "scripts": {
     "build": "cd src-admin && npm i -f && npm run build",
+    "test:package": "mocha test/package --exit",
     "test": "mocha --exit",
     "check": "tsc --noEmit -p tsconfig.check.json",
     "lint": "eslint --ext .js,.jsx .",
