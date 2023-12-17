@@ -1,4 +1,6 @@
 import React from 'react';
+import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
+
 import GenericApp from '@iobroker/adapter-react-v5/GenericApp';
 import Page from './components/Page';
 
@@ -68,6 +70,22 @@ class App extends GenericApp {
         if (!this.state.loaded) {
             return super.render();
         }
+        const body = window.document.body;
+        if (body && (
+            (this.state.themeType === 'dark' && !body.className.includes('dark-theme')) ||
+            (this.state.themeType === 'light' && body.className.includes('light-theme'))
+        ))   {
+            let className = body.className;
+            className = className.replace('dark-theme', '').replace('light-theme', '');
+            if (this.state.themeType === 'dark') {
+                className += ' dark-theme';
+            } else {
+                className += ' light-theme';
+            }
+            className = className.trim();
+            body.className = className;
+        }
+
         /** @type {object} */
         const appStyle: React.CSSProperties = {
             overflow: 'hidden',
@@ -76,15 +94,19 @@ class App extends GenericApp {
         };
 
         // className "device-manager-app" used in tests
-        return <div className="App device-manager-app" style={appStyle}>
-            <Page
-                selectedInstance=""
-                socket={this.socket}
-                uploadImagesToInstance={`${this.adapterName}.${this.instance}`}
-            />
-            {this.renderError()}
-            {this.renderToast()}
-        </div>;
+        return <StyledEngineProvider injectFirst>
+            <ThemeProvider theme={this.state.theme}>
+                <div className="App device-manager-app" style={appStyle}>
+                    <Page
+                        selectedInstance=""
+                        socket={this.socket}
+                        uploadImagesToInstance={`${this.adapterName}.${this.instance}`}
+                    />
+                    {this.renderError()}
+                    {this.renderToast()}
+                </div>
+            </ThemeProvider>
+        </StyledEngineProvider>;
     }
 }
 

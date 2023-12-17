@@ -7,7 +7,7 @@ import {
 import { Clear, Refresh } from '@mui/icons-material';
 
 import { I18n } from '@iobroker/adapter-react-v5';
-import { DeviceInfo, InstanceDetails } from '@iobroker/dm-utils';
+import { DeviceInfo, InstanceDetails } from '@iobroker/dm-utils/build/types/api';
 
 import DeviceCard from './DeviceCard';
 import { getTranslation } from './Utils';
@@ -248,7 +248,7 @@ export default class DeviceList extends Communication<DeviceListProps, DeviceLis
             </div>;
         } else {
             list = this.state.filteredDevices.map(device => <DeviceCard
-                alive={!!this.state.alive}
+                alive={!!this.state.alive && !this.state.loading}
                 key={device.id}
                 id={device.id}
                 title={this.getText(device.name)}
@@ -276,14 +276,14 @@ export default class DeviceList extends Communication<DeviceListProps, DeviceLis
                     <span>
                         <IconButton
                             onClick={() => this.loadData()}
-                            disabled={!this.state.alive}
+                            disabled={!this.state.alive || this.state.loading}
                             size="small"
                         >
                             <Refresh />
                         </IconButton>
                     </span>
                 </Tooltip> : null}
-                {this.state.alive && this.state.instanceInfo?.actions?.length ? <div style={{ marginLeft: 20 }}>
+                {this.state.alive && !this.state.loading && this.state.instanceInfo?.actions?.length ? <div style={{ marginLeft: 20 }}>
                     {this.state.instanceInfo.actions.map(action =>
                         <InstanceActionButton
                             key={action.id}
@@ -294,7 +294,7 @@ export default class DeviceList extends Communication<DeviceListProps, DeviceLis
 
                 <div style={{ flexGrow: 1 }} />
 
-                {this.state.alive ? <TextField
+                {this.state.alive && !this.state.loading ? <TextField
                     variant="standard"
                     style={{ width: 200 }}
                     size="small"

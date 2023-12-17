@@ -4,18 +4,22 @@ import {
     Button, Typography,
     Dialog, DialogActions, DialogContent, IconButton,
     Fab, DialogTitle, Card, CardActions, CardHeader,
-    CardContent, Paper,
+    CardContent, Paper, Accordion, AccordionSummary, AccordionDetails,
 } from '@mui/material';
 
 import {
     MoreVert as MoreVertIcon,
     VideogameAsset as ControlIcon,
     Close as CloseIcon,
+    ExpandMore as ExpandMoreIcon,
 } from '@mui/icons-material';
 
-import { Utils, Icon, Connection, I18n } from '@iobroker/adapter-react-v5';
-import { DeviceDetails, DeviceInfo } from '@iobroker/dm-utils';
-import { ActionBase, ControlBase, ControlState } from '@iobroker/dm-utils/build/types/base';
+import {
+    Utils, Icon, Connection, I18n,
+} from '@iobroker/adapter-react-v5';
+import { DeviceDetails } from '@iobroker/dm-utils';
+import { ControlBase, ControlState } from '@iobroker/dm-utils/build/types/base';
+import { ActionBase, DeviceControl, DeviceInfo } from '@iobroker/dm-utils/build/types/api';
 
 import DeviceActionButton from './DeviceActionButton';
 import DeviceControlComponent from './DeviceControl';
@@ -24,7 +28,7 @@ import JsonConfig from './JsonConfig';
 import DeviceImageUpload from './DeviceImageUpload';
 import { getTranslation } from './Utils';
 
-const NoImageIcon = (props: { style?: React.CSSProperties, className?: string }) => <svg viewBox="0 0 24 24" width="24" height="24" style={props.style} className={props.className}>
+const NoImageIcon = (props: { style?: React.CSSProperties; className?: string }) => <svg viewBox="0 0 24 24" width="24" height="24" style={props.style} className={props.className}>
     <path
         fill="currentColor"
         d="M21.9,21.9l-8.49-8.49l0,0L3.59,3.59l0,0L2.1,2.1L0.69,3.51L3,5.83V19c0,1.1,0.9,2,2,2h13.17l2.31,2.31L21.9,21.9z M5,18 l3.5-4.5l2.5,3.01L12.17,15l3,3H5z M21,18.17L5.83,3H19c1.1,0,2,0.9,2,2V18.17z"
@@ -40,7 +44,7 @@ interface DeviceCardProps {
     socket: Connection;
     /* Instance, where the images should be uploaded to */
     uploadImagesToInstance?: string;
-    deviceHandler: (deviceId: string, action: ActionBase<'api'>, refresh: () => void) => () => void;
+    deviceHandler: (deviceId: string, action: ActionBase, refresh: () => void) => () => void;
     controlHandler: (deviceId: string, control: ControlBase, state: ControlState) => () => Promise<ioBroker.State | null>;
     controlStateHandler: (deviceId: string, control: ControlBase) => () => Promise<ioBroker.State | null>;
     smallCards?: boolean;
@@ -61,6 +65,7 @@ interface DeviceCardState {
     data: Record<string, any>;
     icon: string | undefined;
     showControlDialog: boolean;
+    openedChannels: string[];
 }
 
 /**
@@ -70,12 +75,20 @@ class DeviceCard extends Component<DeviceCardProps, DeviceCardState> {
     constructor(props: DeviceCardProps) {
         super(props);
 
+        let openedChannels: string | string[] = window.localStorage.getItem('dm.openedChannels') || '';
+        try {
+            openedChannels = JSON.parse(openedChannels) as string[];
+        } catch (e) {
+            openedChannels = [];
+        }
+
         this.state = {
             open: false,
             details: null,
             data: {},
             icon: props.device.icon,
             showControlDialog: false,
+            openedChannels: Array.isArray(openedChannels) ? openedChannels : [],
         };
     }
 
@@ -119,7 +132,7 @@ class DeviceCard extends Component<DeviceCardProps, DeviceCardState> {
         const details: DeviceDetails | null = await this.props.socket.sendTo(this.props.instanceId, 'dm:deviceDetails', this.props.device.id);
         console.log(`Got device details for ${this.props.device.id}:`, details);
         this.setState({ details, data: details?.data || {} });
-    };
+    }
 
     /**
      * Refresh the device details
@@ -177,6 +190,78 @@ class DeviceCard extends Component<DeviceCardProps, DeviceCardState> {
             return null;
         }
         const colors = { primary: '#111', secondary: '#888' };
+        let content: React.JSX.Element | React.JSX.Element[] | undefined;
+
+        // detect if any control has channel info
+        const hasChannel = this.props.device.controls?.some(control => !!control.channel);
+        if (hasChannel) {
+            const channels: Record<string, DeviceControl[]> = {};
+            const noNameChannel: DeviceControl[] = [];
+
+            // sort by channels
+            this.props.device.controls?.forEach(control => {
+                if (control.channel?.name) {
+                    const channelName = getText(control.channel.name);
+                    if (!channelName) {
+                        noNameChannel.push(control);
+                    } else {
+                        channels[channelName] = channels[channelName] || [];
+                        channels[channelName].push(control);
+                    }
+                } else {
+                    noNameChannel.push(control);
+                }
+            });
+            const keys = Object.keys(channels);
+
+            if (noNameChannel.length) {
+                channels.__noNameChannel__ = noNameChannel;
+                keys.push('__noNameChannel__');
+            }
+            content = keys.map(channelName => <Accordion
+                key={channelName}
+                expanded={this.state.openedChannels.includes(channelName)}
+                onChange={() => {
+                    const openedChannels = [...this.state.openedChannels];
+                    const pos = openedChannels.indexOf(channelName);
+                    if (pos === -1) {
+                        openedChannels.push(channelName);
+                    } else {
+                        openedChannels.splice(pos, 1);
+                    }
+                    this.setState({ openedChannels });
+                    window.localStorage.setItem('dm.openedChannels', JSON.stringify(openedChannels));
+                }}
+            >
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                    <Typography title={getText(channels[channelName][0].description)}>{channelName === '__noNameChannel__' ? I18n.t('noName') : channelName}</Typography>
+                </AccordionSummary>
+                {this.state.openedChannels.includes(channelName) ? <AccordionDetails style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                    {channels[channelName].map(control => <DeviceControlComponent
+                        disabled={false}
+                        key={control.id}
+                        control={control}
+                        socket={this.props.socket}
+                        colors={colors}
+                        deviceId={this.props.device.id}
+                        controlHandler={this.props.controlHandler}
+                        controlStateHandler={this.props.controlStateHandler}
+                    />)}
+                </AccordionDetails> : null}
+            </Accordion>);
+        } else {
+            content = this.props.device.controls?.map(control => <DeviceControlComponent
+                disabled={false}
+                key={control.id}
+                control={control}
+                socket={this.props.socket}
+                colors={colors}
+                deviceId={this.props.device.id}
+                controlHandler={this.props.controlHandler}
+                controlStateHandler={this.props.controlStateHandler}
+            />);
+        }
+
         return  <Dialog
             open={!0}
             onClose={() => this.setState({ showControlDialog: false })}
@@ -196,17 +281,7 @@ class DeviceCard extends Component<DeviceCardProps, DeviceCardState> {
                 </IconButton>
             </DialogTitle>
             <DialogContent style={{ display: 'flex', flexDirection: 'column' }}>
-                {this.props.device.controls?.map(control =>
-                    <DeviceControlComponent
-                        disabled={false}
-                        key={control.id}
-                        control={control}
-                        socket={this.props.socket}
-                        colors={colors}
-                        deviceId={this.props.device.id}
-                        controlHandler={this.props.controlHandler}
-                        controlStateHandler={this.props.controlStateHandler}
-                    />)}
+                {content}
             </DialogContent>
         </Dialog>;
     }
