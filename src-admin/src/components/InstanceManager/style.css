@@ -1,0 +1,29 @@
+@keyframes newValueAnimation-dark {
+    0% {
+        color: #00f900;
+    }
+    80% {
+        color: #80FF80;
+    }
+    100% {
+        color: #fff;
+    }
+}
+@keyframes newValueAnimation-light {
+    0% {
+        color: #00f900;
+    }
+    80% {
+        color: #008000;
+    }
+    100% {
+        color: #000;
+    }
+}
+
+.dark-theme .new-value {
+    animation: newValueAnimation-dark 0.5s ease-in-out
+}
+.light-theme .new-value {
+    animation: newValueAnimation-light 0.5s ease-in-out
+}

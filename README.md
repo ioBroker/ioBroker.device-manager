@@ -32,6 +32,7 @@ Manage devices of all your adapters (if supported) in one place.
 -->
 
 ### **WORK IN PROGRESS**
+* (bluefox) Migrate to Typescript
 * (Jey Cee) initial release
 
 ## License

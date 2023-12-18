@@ -1,7 +1,3 @@
 {
-	"device-manager adapter settings": "Ajustes del adaptador para device-manager",
-	"manufacturer": "Fabricante",
-	"model": "Modelo",
-	"batteryTooltip": "Batería",
-	"connectedIconTooltip": "Conectado"
+	"device-manager adapter settings": "Ajustes del adaptador para device-manager"
 }

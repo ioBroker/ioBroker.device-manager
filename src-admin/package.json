@@ -13,8 +13,12 @@
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "@iobroker/adapter-react-v5": "^4.7.11",
-    "@types/react": "^18.2.42",
+    "@iobroker/adapter-react-v5": "^4.8.1",
+    "@iobroker/dm-utils": "^0.1.8",
+    "@iobroker/dm-gui-components": "^0.0.10",
+    "@mui/material": "5.14.14",
+    "@mui/styles": "5.14.14",
+    "@types/react": "^18.2.45",
     "@types/react-dom": "^18.2.17",
     "@vitejs/plugin-react": "^4.2.1",
     "eslint": "^8.55.0",
@@ -23,6 +27,6 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
-    "vite": "^5.0.7"
+    "vite": "^5.0.10"
   }
 }

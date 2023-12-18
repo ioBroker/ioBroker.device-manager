@@ -51,15 +51,13 @@
 		"main": "main.js",
 		"icon": "device-manager.png",
 		"enabled": true,
-		"extIcon": "https://raw.githubusercontent.com/Jey Cee/ioBroker.device-manager/main/admin/device-manager.png",
-		"readme": "https://github.com/Jey Cee/ioBroker.device-manager/blob/main/README.md",
+		"extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.device-manager/main/admin/device-manager.png",
+		"readme": "https://github.com/ioBroker/ioBroker.device-manager/blob/main/README.md",
 		"loglevel": "info",
-		"mode": "daemon",
+		"mode": "once",
 		"type": "utility",
-		"compact": true,
-		"connectionType": "local",
-		"dataSource": "poll",
-		"messagebox": true,
+		"onlyWWW": true,
+		"singleton": true,
 		"materializeTab": true,
 		"adminUI": {
 			"config": "none",
@@ -92,7 +90,8 @@
 			{
 				"admin": ">=6.3.7"
 			}
-		]
+		],
+		"tier": 3
 	},
 	"native": {},
 	"objects": [],

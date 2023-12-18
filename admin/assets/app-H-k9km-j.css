@@ -1,0 +1,1 @@
+@keyframes newValueAnimation-dark{0%{color:#00f900}80%{color:#80ff80}to{color:#fff}}@keyframes newValueAnimation-light{0%{color:#00f900}80%{color:green}to{color:#000}}.dark-theme .new-value{animation:newValueAnimation-dark .5s ease-in-out}.light-theme .new-value{animation:newValueAnimation-light .5s ease-in-out}
