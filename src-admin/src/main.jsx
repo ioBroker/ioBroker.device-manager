@@ -1,7 +1,6 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
-import { StylesProvider, createGenerateClassName } from '@mui/styles';
+import { ThemeProvider } from '@mui/material/styles';
 
 import { CssBaseline } from '@mui/material';
 
@@ -9,28 +8,20 @@ import { Utils, Theme } from '@iobroker/adapter-react-v5';
 
 import App from './App';
 
-const generateClassName = createGenerateClassName({
-    productionPrefix: 'dm',
-});
-
 let themeName = Utils.getThemeName();
 function build() {
     const container = document.getElementById('root');
     const root = createRoot(container);
-    root.render(<StylesProvider generateClassName={generateClassName}>
-        <StyledEngineProvider injectFirst>
-            <ThemeProvider theme={Theme(themeName)}>
-                <CssBaseline />
-                <App
-                    adapterName="device-manager"
-                    onThemeChange={_theme => {
-                        themeName = _theme;
-                        build();
-                    }}
-                />
-            </ThemeProvider>
-        </StyledEngineProvider>
-    </StylesProvider>);
+    root.render(<ThemeProvider theme={Theme(themeName)}>
+        <CssBaseline />
+        <App
+            adapterName="device-manager"
+            onThemeChange={_theme => {
+                themeName = _theme;
+                build();
+            }}
+        />
+    </ThemeProvider>);
 }
 
 build();

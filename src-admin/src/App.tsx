@@ -17,10 +17,6 @@ import uk from './i18n/uk.json';
 import zhCn from './i18n/zh-cn.json';
 
 /**
- * @type {(_theme: Theme) => import("@material-ui/styles").StyleRules}
- */
-
-/**
  * TabApp component
  * @extends {GenericApp<typeof App>}
  * @param {object} props
