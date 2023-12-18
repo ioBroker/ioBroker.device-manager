@@ -11,7 +11,7 @@
       "name": "UncleSamSwiss"
     }
   ],
-  "homepage": "https://github.com/Jey Cee/ioBroker.device-manager",
+  "homepage": "https://github.com/ioBroker/ioBroker.device-manager",
   "license": "MIT",
   "keywords": [
     "devices",
@@ -19,7 +19,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Jey Cee/ioBroker.device-manager.git"
+    "url": "https://github.com/ioBroker/ioBroker.device-manager.git"
   },
   "engines": {
     "node": ">= 16"
@@ -73,7 +73,7 @@
     "update-packages": "ncu --upgrade && cd src-admin && ncu --upgrade && cd .."
   },
   "bugs": {
-    "url": "https://github.com/Jey Cee/ioBroker.device-manager/issues"
+    "url": "https://github.com/ioBroker/ioBroker.device-manager/issues"
   },
   "readmeFilename": "README.md"
 }
