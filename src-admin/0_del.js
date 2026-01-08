@@ -41,7 +41,8 @@ function copyRecursiveSync(src, dest, ignoreFiles, renameFiles) {
     if (isDirectory) {
         !fs.existsSync(dest) && fs.mkdirSync(dest);
         fs.readdirSync(src).forEach(childItemName =>
-            copyRecursiveSync(`${src}/${childItemName}`, `${dest}/${childItemName}`));
+            copyRecursiveSync(`${src}/${childItemName}`, `${dest}/${childItemName}`),
+        );
     } else {
         if (ignoreFiles && ignoreFiles.includes(src)) {
             return;

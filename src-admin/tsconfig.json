@@ -1,21 +1,26 @@
-// Specialized tsconfig for the admin directory,
-// includes DOM typings and configures the admin build
 {
-    "extends": "../tsconfig.json",
+    // Used to type-check in the editor
     "compilerOptions": {
+        "module": "esnext",
+        "target": "esnext",
+        "moduleResolution": "node",
+        "strictNullChecks": true,
+        "allowSyntheticDefaultImports": true,
+        "resolveJsonModule": true,
+        "allowJs": true,
+        "checkJs": false,
         "noEmit": false,
+        "declaration": true,
         "outDir": "./build",
         "sourceMap": true,
+        "inlineSources": true,
         "sourceRoot": "./src",
-        "noImplicitAny": false,
+        "noImplicitAny": true,
+        "skipLibCheck": true,
         "lib": ["es2018", "DOM"],
-
-        // Support React - both must be here because parcel v1 does not
-        // evaluate the "extends" option
         "jsx": "react",
-        "esModuleInterop": true,
-        "allowJs": true
+        "types": ["@iobroker/types"]
     },
-    "include": ["./**/*.ts", "./**/*.tsx", "../src/lib/adapter-config.d.ts"],
-    "exclude": ["./**/*.test.ts", "./**/*.test.tsx"]
+    "include": ["./src/**/*.js", "./src/**/*.jsx", "./src/**/*.ts", "./src/**/*.tsx", "./src/**/*.d.ts"],
+    "exclude": ["gulpfile.js"]
 }

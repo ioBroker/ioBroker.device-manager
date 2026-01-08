@@ -23,6 +23,7 @@ Manage devices of all your adapters (if supported) in one place.
 - WLED [available on GitHub](https://github.com/DrozmotiX/ioBroker.wled)
 - HomeKit Controller [available on GitHub](https://github.com/Apollon77/ioBroker.homekit-controller)
 - Matter [available on GitHub](https://github.com/ioBroker/ioBroker.matter)
+- Homematic [available on npm](https://www.npmjs.com/package/iobroker.homematic/)
 
 ---
 ## Changelog
@@ -37,7 +38,7 @@ Manage devices of all your adapters (if supported) in one place.
 ## License
 MIT License
 
-Copyright (c) 2023 Jey Cee <iobroker@all-smart.net>
+Copyright (c) 2023-2026 Jey Cee <iobroker@all-smart.net>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
