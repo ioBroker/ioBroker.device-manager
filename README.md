@@ -1,3 +1,5 @@
+**Deprecated: This package was completely included into ioBroker.admin via @iobroker/dm-gui-component**
+
 ![Logo](admin/device-manager.png)
 # ioBroker.device-manager
 
